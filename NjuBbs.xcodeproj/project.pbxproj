@@ -15,6 +15,7 @@
 		211AA5141E2625D700D5C690 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 211AA5121E2625D700D5C690 /* LaunchScreen.storyboard */; };
 		211AA51F1E2625D700D5C690 /* NjuBbsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 211AA51E1E2625D700D5C690 /* NjuBbsTests.swift */; };
 		211AA52A1E2625D700D5C690 /* NjuBbsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 211AA5291E2625D700D5C690 /* NjuBbsUITests.swift */; };
+		F1B436564D0C767D6BA73F98 /* Pods_NjuBbs.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C0E905B444DD709EF552799 /* Pods_NjuBbs.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +50,9 @@
 		211AA5251E2625D700D5C690 /* NjuBbsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NjuBbsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		211AA5291E2625D700D5C690 /* NjuBbsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NjuBbsUITests.swift; sourceTree = "<group>"; };
 		211AA52B1E2625D700D5C690 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		35C35FC13575B9A3A1D2978B /* Pods-NjuBbs.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NjuBbs.release.xcconfig"; path = "Pods/Target Support Files/Pods-NjuBbs/Pods-NjuBbs.release.xcconfig"; sourceTree = "<group>"; };
+		4C0E905B444DD709EF552799 /* Pods_NjuBbs.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NjuBbs.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E8B845F33A86885ED3161609 /* Pods-NjuBbs.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NjuBbs.debug.xcconfig"; path = "Pods/Target Support Files/Pods-NjuBbs/Pods-NjuBbs.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +60,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F1B436564D0C767D6BA73F98 /* Pods_NjuBbs.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -76,6 +81,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0750A71B94CD655AD893A10A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				4C0E905B444DD709EF552799 /* Pods_NjuBbs.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		211AA4FA1E2625D600D5C690 = {
 			isa = PBXGroup;
 			children = (
@@ -83,6 +96,8 @@
 				211AA51D1E2625D700D5C690 /* NjuBbsTests */,
 				211AA5281E2625D700D5C690 /* NjuBbsUITests */,
 				211AA5041E2625D700D5C690 /* Products */,
+				99D11E36F75EB8B8DD5D966F /* Pods */,
+				0750A71B94CD655AD893A10A /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -128,6 +143,15 @@
 			path = NjuBbsUITests;
 			sourceTree = "<group>";
 		};
+		99D11E36F75EB8B8DD5D966F /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				E8B845F33A86885ED3161609 /* Pods-NjuBbs.debug.xcconfig */,
+				35C35FC13575B9A3A1D2978B /* Pods-NjuBbs.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -135,9 +159,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 211AA52E1E2625D700D5C690 /* Build configuration list for PBXNativeTarget "NjuBbs" */;
 			buildPhases = (
+				B69DF37DE9C6625DE275571C /* [CP] Check Pods Manifest.lock */,
 				211AA4FF1E2625D700D5C690 /* Sources */,
 				211AA5001E2625D700D5C690 /* Frameworks */,
 				211AA5011E2625D700D5C690 /* Resources */,
+				4329BE288B351EF2FEFF8E04 /* [CP] Embed Pods Frameworks */,
+				CB1C188341E15C35BFFEFA10 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -259,6 +286,54 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		4329BE288B351EF2FEFF8E04 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-NjuBbs/Pods-NjuBbs-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B69DF37DE9C6625DE275571C /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		CB1C188341E15C35BFFEFA10 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-NjuBbs/Pods-NjuBbs-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		211AA4FF1E2625D700D5C690 /* Sources */ = {
@@ -417,10 +492,12 @@
 		};
 		211AA52F1E2625D700D5C690 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E8B845F33A86885ED3161609 /* Pods-NjuBbs.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 2CZEJUQUR6;
 				INFOPLIST_FILE = NjuBbs/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.polarxiong.NjuBbs;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -430,10 +507,12 @@
 		};
 		211AA5301E2625D700D5C690 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 35C35FC13575B9A3A1D2978B /* Pods-NjuBbs.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 2CZEJUQUR6;
 				INFOPLIST_FILE = NjuBbs/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.polarxiong.NjuBbs;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -518,6 +597,7 @@
 				211AA5301E2625D700D5C690 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		211AA5311E2625D700D5C690 /* Build configuration list for PBXNativeTarget "NjuBbsTests" */ = {
 			isa = XCConfigurationList;
@@ -526,6 +606,7 @@
 				211AA5331E2625D700D5C690 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		211AA5341E2625D700D5C690 /* Build configuration list for PBXNativeTarget "NjuBbsUITests" */ = {
 			isa = XCConfigurationList;
@@ -534,6 +615,7 @@
 				211AA5361E2625D700D5C690 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 

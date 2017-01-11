@@ -8,6 +8,10 @@
 
 import UIKit
 import CoreData
+import INSPersistentContainer
+
+typealias NSPersistentContainer = INSPersistentContainer
+typealias NSPersistentStoreDescription = INSPersistentStoreDescription
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
