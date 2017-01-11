@@ -15,6 +15,8 @@
 		211AA5141E2625D700D5C690 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 211AA5121E2625D700D5C690 /* LaunchScreen.storyboard */; };
 		211AA51F1E2625D700D5C690 /* NjuBbsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 211AA51E1E2625D700D5C690 /* NjuBbsTests.swift */; };
 		211AA52A1E2625D700D5C690 /* NjuBbsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 211AA5291E2625D700D5C690 /* NjuBbsUITests.swift */; };
+		212771A91E2642C00050C3F1 /* TopTenTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 212771A81E2642C00050C3F1 /* TopTenTableViewCell.swift */; };
+		212771AD1E2643B70050C3F1 /* TopTenTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 212771AC1E2643B70050C3F1 /* TopTenTableViewController.swift */; };
 		F1B436564D0C767D6BA73F98 /* Pods_NjuBbs.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C0E905B444DD709EF552799 /* Pods_NjuBbs.framework */; };
 /* End PBXBuildFile section */
 
@@ -50,6 +52,8 @@
 		211AA5251E2625D700D5C690 /* NjuBbsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NjuBbsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		211AA5291E2625D700D5C690 /* NjuBbsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NjuBbsUITests.swift; sourceTree = "<group>"; };
 		211AA52B1E2625D700D5C690 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		212771A81E2642C00050C3F1 /* TopTenTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopTenTableViewCell.swift; sourceTree = "<group>"; };
+		212771AC1E2643B70050C3F1 /* TopTenTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopTenTableViewController.swift; sourceTree = "<group>"; };
 		35C35FC13575B9A3A1D2978B /* Pods-NjuBbs.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NjuBbs.release.xcconfig"; path = "Pods/Target Support Files/Pods-NjuBbs/Pods-NjuBbs.release.xcconfig"; sourceTree = "<group>"; };
 		4C0E905B444DD709EF552799 /* Pods_NjuBbs.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NjuBbs.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E8B845F33A86885ED3161609 /* Pods-NjuBbs.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NjuBbs.debug.xcconfig"; path = "Pods/Target Support Files/Pods-NjuBbs/Pods-NjuBbs.debug.xcconfig"; sourceTree = "<group>"; };
@@ -117,10 +121,12 @@
 				211AA5061E2625D700D5C690 /* AppDelegate.swift */,
 				211AA5081E2625D700D5C690 /* ViewController.swift */,
 				211AA50A1E2625D700D5C690 /* Main.storyboard */,
+				212771A81E2642C00050C3F1 /* TopTenTableViewCell.swift */,
 				211AA5101E2625D700D5C690 /* Assets.xcassets */,
 				211AA5121E2625D700D5C690 /* LaunchScreen.storyboard */,
 				211AA5151E2625D700D5C690 /* Info.plist */,
 				211AA50D1E2625D700D5C690 /* NjuBbs.xcdatamodeld */,
+				212771AC1E2643B70050C3F1 /* TopTenTableViewController.swift */,
 			);
 			path = NjuBbs;
 			sourceTree = "<group>";
@@ -341,7 +347,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				211AA5091E2625D700D5C690 /* ViewController.swift in Sources */,
+				212771A91E2642C00050C3F1 /* TopTenTableViewCell.swift in Sources */,
 				211AA5071E2625D700D5C690 /* AppDelegate.swift in Sources */,
+				212771AD1E2643B70050C3F1 /* TopTenTableViewController.swift in Sources */,
 				211AA50F1E2625D700D5C690 /* NjuBbs.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
