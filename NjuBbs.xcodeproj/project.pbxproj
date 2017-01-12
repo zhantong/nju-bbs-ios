@@ -17,6 +17,8 @@
 		211AA52A1E2625D700D5C690 /* NjuBbsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 211AA5291E2625D700D5C690 /* NjuBbsUITests.swift */; };
 		212771A91E2642C00050C3F1 /* TopTenTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 212771A81E2642C00050C3F1 /* TopTenTableViewCell.swift */; };
 		212771AD1E2643B70050C3F1 /* TopTenTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 212771AC1E2643B70050C3F1 /* TopTenTableViewController.swift */; };
+		2187A6791E27BBC00025933B /* BoardsListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2187A6781E27BBC00025933B /* BoardsListTableViewController.swift */; };
+		2187A67B1E27BC080025933B /* BoardsListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2187A67A1E27BC080025933B /* BoardsListTableViewCell.swift */; };
 		218A52201E265ABB0073494A /* ArticleTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218A521F1E265ABB0073494A /* ArticleTableViewController.swift */; };
 		218A52221E2671DB0073494A /* ArticleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218A52211E2671DB0073494A /* ArticleTableViewCell.swift */; };
 		F1B436564D0C767D6BA73F98 /* Pods_NjuBbs.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C0E905B444DD709EF552799 /* Pods_NjuBbs.framework */; };
@@ -56,6 +58,8 @@
 		211AA52B1E2625D700D5C690 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		212771A81E2642C00050C3F1 /* TopTenTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopTenTableViewCell.swift; sourceTree = "<group>"; };
 		212771AC1E2643B70050C3F1 /* TopTenTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopTenTableViewController.swift; sourceTree = "<group>"; };
+		2187A6781E27BBC00025933B /* BoardsListTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardsListTableViewController.swift; sourceTree = "<group>"; };
+		2187A67A1E27BC080025933B /* BoardsListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardsListTableViewCell.swift; sourceTree = "<group>"; };
 		218A521F1E265ABB0073494A /* ArticleTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArticleTableViewController.swift; sourceTree = "<group>"; };
 		218A52211E2671DB0073494A /* ArticleTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArticleTableViewCell.swift; sourceTree = "<group>"; };
 		35C35FC13575B9A3A1D2978B /* Pods-NjuBbs.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NjuBbs.release.xcconfig"; path = "Pods/Target Support Files/Pods-NjuBbs/Pods-NjuBbs.release.xcconfig"; sourceTree = "<group>"; };
@@ -125,6 +129,8 @@
 				211AA5061E2625D700D5C690 /* AppDelegate.swift */,
 				211AA5081E2625D700D5C690 /* ViewController.swift */,
 				211AA50A1E2625D700D5C690 /* Main.storyboard */,
+				2187A67A1E27BC080025933B /* BoardsListTableViewCell.swift */,
+				2187A6781E27BBC00025933B /* BoardsListTableViewController.swift */,
 				218A52211E2671DB0073494A /* ArticleTableViewCell.swift */,
 				218A521F1E265ABB0073494A /* ArticleTableViewController.swift */,
 				212771A81E2642C00050C3F1 /* TopTenTableViewCell.swift */,
@@ -353,9 +359,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				211AA5091E2625D700D5C690 /* ViewController.swift in Sources */,
+				2187A67B1E27BC080025933B /* BoardsListTableViewCell.swift in Sources */,
 				212771A91E2642C00050C3F1 /* TopTenTableViewCell.swift in Sources */,
 				211AA5071E2625D700D5C690 /* AppDelegate.swift in Sources */,
 				212771AD1E2643B70050C3F1 /* TopTenTableViewController.swift in Sources */,
+				2187A6791E27BBC00025933B /* BoardsListTableViewController.swift in Sources */,
 				218A52201E265ABB0073494A /* ArticleTableViewController.swift in Sources */,
 				218A52221E2671DB0073494A /* ArticleTableViewCell.swift in Sources */,
 				211AA50F1E2625D700D5C690 /* NjuBbs.xcdatamodeld in Sources */,
