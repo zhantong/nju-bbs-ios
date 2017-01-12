@@ -15,8 +15,10 @@ struct CellData {
     let author: String!
     let board: String!
     let numReply: String!
+    let titleUrl: String!
 }
 class TopTenTableViewController: UITableViewController {
+    let baseUrl = "http://bbs.nju.edu.cn"
     var cellDataList = [CellData]()
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,7 +29,7 @@ class TopTenTableViewController: UITableViewController {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
 
-        Alamofire.request("http://bbs.nju.edu.cn/bbstop10").responseData(completionHandler: {
+        Alamofire.request(baseUrl + "/bbstop10").responseData(completionHandler: {
             response in
             print(response.request!)
             print(response.response!)
@@ -40,7 +42,8 @@ class TopTenTableViewController: UITableViewController {
                         let title = row.at_xpath("./td[3]")
                         let author = row.at_xpath("./td[4]")
                         let numReply = row.at_xpath("./td[5]")
-                        self.cellDataList.append(CellData(title: title?.text, author: author?.text, board: board?.text, numReply: numReply?.text))
+                        let titleUrl = title?.at_xpath("./a/@href")
+                        self.cellDataList.append(CellData(title: title?.text, author: author?.text, board: board?.text, numReply: numReply?.text, titleUrl: titleUrl?.text))
                     }
                     self.tableView.reloadData()
                 }
@@ -74,6 +77,19 @@ class TopTenTableViewController: UITableViewController {
         cell.numReplyLabel.text = cellDataList[indexPath.row].numReply?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
 
         return cell
+    }
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let cellData = cellDataList[indexPath.row]
+        print(cellData.titleUrl)
+        self.performSegue(withIdentifier: "GoToArticle", sender: self)
+    }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "GoToArticle" {
+            if let destination = segue.destination as? ArticleTableViewController {
+                let indexPath = tableView.indexPathForSelectedRow
+                destination.viaSegue = baseUrl + "/" + cellDataList[(indexPath?.row)!].titleUrl
+            }
+        }
     }
 
 
