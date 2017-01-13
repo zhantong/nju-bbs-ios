@@ -133,18 +133,18 @@
 				211AA5061E2625D700D5C690 /* AppDelegate.swift */,
 				211AA5081E2625D700D5C690 /* ViewController.swift */,
 				211AA50A1E2625D700D5C690 /* Main.storyboard */,
-				2187A67E1E27C25C0025933B /* BoardTableViewCell.swift */,
-				2187A67A1E27BC080025933B /* BoardsListTableViewCell.swift */,
-				2187A67C1E27C1EB0025933B /* BoardTableViewController.swift */,
-				2187A6781E27BBC00025933B /* BoardsListTableViewController.swift */,
 				218A52211E2671DB0073494A /* ArticleTableViewCell.swift */,
 				218A521F1E265ABB0073494A /* ArticleTableViewController.swift */,
+				2187A67A1E27BC080025933B /* BoardsListTableViewCell.swift */,
+				2187A6781E27BBC00025933B /* BoardsListTableViewController.swift */,
+				2187A67E1E27C25C0025933B /* BoardTableViewCell.swift */,
+				2187A67C1E27C1EB0025933B /* BoardTableViewController.swift */,
 				212771A81E2642C00050C3F1 /* TopTenTableViewCell.swift */,
+				212771AC1E2643B70050C3F1 /* TopTenTableViewController.swift */,
 				211AA5101E2625D700D5C690 /* Assets.xcassets */,
 				211AA5121E2625D700D5C690 /* LaunchScreen.storyboard */,
 				211AA5151E2625D700D5C690 /* Info.plist */,
 				211AA50D1E2625D700D5C690 /* NjuBbs.xcdatamodeld */,
-				212771AC1E2643B70050C3F1 /* TopTenTableViewController.swift */,
 			);
 			path = NjuBbs;
 			sourceTree = "<group>";
