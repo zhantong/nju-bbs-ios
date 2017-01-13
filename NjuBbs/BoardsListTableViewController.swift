@@ -42,8 +42,8 @@ class BoardsListTableViewController: UITableViewController {
                         let category = row.at_xpath("./td[3]")
                         let name = row.at_xpath("./td[4]")
                         let moderator = row.at_xpath("./td[5]")
-                        let boardUrl = board?.at_xpath("./a/@href")
-                        self.cellDataList.append(BoardsListCellData(board: board?.text, category: category?.text, name: name?.text, moderator: moderator?.text, boardUrl: boardUrl?.text))
+                        var boardUrl = board?.at_xpath("./a/@href")
+                        self.cellDataList.append(BoardsListCellData(board: board?.text, category: category?.text, name: name?.text, moderator: moderator?.text, boardUrl: boardUrl?.text?.replacingOccurrences(of: "bbsdoc", with: "bbstdoc")))
                     }
                     self.tableView.reloadData()
                 }
@@ -81,6 +81,20 @@ class BoardsListTableViewController: UITableViewController {
         // Configure the cell...
 
         return cell
+    }
+
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let cellData = cellDataList[indexPath.row]
+        print(cellData.boardUrl)
+        self.performSegue(withIdentifier: "GoToBoard", sender: self)
+    }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "GoToBoard" {
+            if let destination = segue.destination as? BoardTableViewController {
+                let indexPath = tableView.indexPathForSelectedRow
+                destination.viaSegue = baseUrl + "/" + cellDataList[(indexPath?.row)!].boardUrl
+            }
+        }
     }
 
 
