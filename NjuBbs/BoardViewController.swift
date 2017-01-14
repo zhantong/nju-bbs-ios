@@ -9,6 +9,7 @@
 import UIKit
 import Alamofire
 import Kanna
+
 extension String {
     mutating func stringByRepairTr() {
         do {
@@ -33,31 +34,12 @@ extension String {
         }
     }
 }
-class BoardViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-    struct TopTenCellData {
-        let title: String!
-        let author: String!
-        let board: String!
-        let numReply: String!
-        let titleUrl: String!
-    }
-    struct BoardCellData {
-        let status: String!
-        let author: String!
-        let time: String!
-        let title: String!
-        let numRead: String!
-        let titleUrl: String!
-    }
-    var boardType: Int = 0
-    var boardUrl: String = ""
-    let baseUrl = "http://bbs.nju.edu.cn"
-    var topTenCellDataList = [TopTenCellData]()
-    var boardCellDataList = [BoardCellData]()
-
+class BoardViewController: UIViewController {
     var boardsListCellDataList = [BoardsListCellData]()
     var currentBoardLabel: BoardLabel!
     var labelArray: [BoardLabel] = []
+    var currentArticleListTableViewController: ArticleListTableViewController? = nil
+    let baseUrl = "http://bbs.nju.edu.cn"
     let realSelf = self
     let labelX: ([UILabel]) -> CGFloat = {
         (labels: [UILabel]) -> CGFloat in
@@ -70,13 +52,10 @@ class BoardViewController: UIViewController, UITableViewDelegate, UITableViewDat
     }
     @IBOutlet weak var boardsListScroll: UIScrollView!
 
-    @IBOutlet weak var contentTableView: UITableView!
+    @IBOutlet weak var contentScrollView: UIScrollView!
     override func viewDidLoad() {
         super.viewDidLoad()
         automaticallyAdjustsScrollViewInsets = false
-
-        contentTableView.delegate = self
-        contentTableView.dataSource = self
         initBoardsListScrollView()
         // Do any additional setup after loading the view.
     }
@@ -124,8 +103,14 @@ class BoardViewController: UIViewController, UITableViewDelegate, UITableViewDat
                 self.boardsListScroll.addSubview(label)
             }
             self.boardsListScroll.contentSize = CGSize(width: self.labelX(self.labelArray), height: 0)
+            self.initContentScrollView()
             self.initFirstBoard()
         })
+    }
+    func initContentScrollView() {
+        contentScrollView.contentSize = CGSize(width: UIScreen.main.bounds.width * CGFloat(labelArray.count), height: 0)
+        contentScrollView.isPagingEnabled = true
+        contentScrollView.delegate = self
     }
     func initFirstBoard() {
         let firstBoradLabel = labelArray.first!
@@ -139,59 +124,8 @@ class BoardViewController: UIViewController, UITableViewDelegate, UITableViewDat
         // Dispose of any resources that can be recreated.
     }
 
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if boardType == 1 {
-            return topTenCellDataList.count
-        } else if boardType == 2 {
-            return boardCellDataList.count
-        }
-        return 0
-    }
 
 
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if boardType == 1 {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "TopTenTableViewCell", for: indexPath) as! TopTenTableViewCell
-
-            cell.authorLabel.text = topTenCellDataList[indexPath.row].author?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-            cell.titleLabel.text = topTenCellDataList[indexPath.row].title?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-            cell.boardLabel.text = topTenCellDataList[indexPath.row].board?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-            cell.numReplyLabel.text = topTenCellDataList[indexPath.row].numReply?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-
-            return cell
-        } else if boardType == 2 {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "BoardTableViewCell", for: indexPath) as! BoardTableViewCell
-
-            cell.statusLabel.text = boardCellDataList[indexPath.row].status?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-            cell.authorLabel.text = boardCellDataList[indexPath.row].author?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-            cell.timeLabel.text = boardCellDataList[indexPath.row].time?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-            cell.titleLabel.text = boardCellDataList[indexPath.row].title?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-            cell.numReadLabel.text = boardCellDataList[indexPath.row].numRead?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-
-            return cell
-        }
-        return UITableViewCell()
-    }
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.performSegue(withIdentifier: "GoToArticle", sender: self)
-    }
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "GoToArticle" {
-            if let destination = segue.destination as? ArticleTableViewController {
-                let indexPath = contentTableView.indexPathForSelectedRow
-                if boardType == 1 {
-                    destination.viaSegue = baseUrl + "/" + topTenCellDataList[(indexPath?.row)!].titleUrl
-                } else if boardType == 2 {
-                    destination.viaSegue = baseUrl + "/" + boardCellDataList[(indexPath?.row)!].titleUrl
-                }
-
-            }
-        }
-    }
     /*
     // MARK: - Navigation
 
@@ -204,94 +138,16 @@ class BoardViewController: UIViewController, UITableViewDelegate, UITableViewDat
     func boardLabelClick(_ recognizer: UITapGestureRecognizer) {
 
         let label = recognizer.view as! BoardLabel
-        let index = label.tag
+        let index = labelArray.index(of: label)
 
         currentBoardLabel.scale = 0
         label.scale = 1
-        currentBoardLabel = label
+        //currentBoardLabel = label
 
-        //let offsetX = CGFloat(index) * self.boardsListScroll.bounds.width
-        //let offset = CGPoint(x: offsetX, y: 0)
-        //这个方法animated为true才会导致scrollViewDidEndScrollingAnimation代理方法被调用
-        //self.boardsListScroll.setContentOffset(offset, animated: false)
-        //代码滚动到显示了那一"页"
-        self.scrollViewDidEndScrollingAnimation(self.boardsListScroll)
-    }
-
-    func initTable() {
-        if boardType == 1 {
-            Alamofire.request(baseUrl + "/bbstop10").responseData(completionHandler: {
-                response in
-                print(response.request!)
-                print(response.response!)
-                print(response.data!)
-                if let data = response.result.value, let content = String(data: data, encoding: String.Encoding(rawValue: CFStringConvertEncodingToNSStringEncoding(CFStringEncoding(CFStringEncodings.GB_18030_2000.rawValue)))) {
-                    if let doc = HTML(html: content, encoding: .utf8) {
-                        for row in doc.xpath("//table/tr[position()>1]") {
-                            print(row.text)
-                            let board = row.at_xpath("./td[2]")
-                            let title = row.at_xpath("./td[3]")
-                            let author = row.at_xpath("./td[4]")
-                            let numReply = row.at_xpath("./td[5]")
-                            let titleUrl = title?.at_xpath("./a/@href")
-                            self.topTenCellDataList.append(TopTenCellData(title: title?.text, author: author?.text, board: board?.text, numReply: numReply?.text, titleUrl: titleUrl?.text))
-                        }
-                        self.contentTableView.reloadData()
-                    }
-                }
-            })
-        } else if boardType == 2 {
-            Alamofire.request(baseUrl + "/" + boardUrl).responseData(completionHandler: {
-                response in
-                print(response.request!)
-                print(response.response!)
-                print(response.data!)
-                if let data = response.result.value, var content = String(data: data, encoding: String.Encoding(rawValue: CFStringConvertEncodingToNSStringEncoding(CFStringEncoding(CFStringEncodings.GB_18030_2000.rawValue)))) {
-                    content.stringByRepairTd()
-                    content.stringByRepairTr()
-                    print(content)
-                    if let doc = HTML(html: content, encoding: .utf8) {
-                        let tableHead = doc.at_xpath("//table[last()]/tr[1]")
-                        var columnIndexStatus = 0, columnIndexAuthor = 0, columnIndexTime = 0, columnIndexTitle = 0, columnIndexNumRead = 0
-                        for (index, headItem) in (tableHead?.xpath("./td").enumerated())! {
-                            if let item = headItem.text?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) {
-                                switch item {
-                                case "状态":
-                                    columnIndexStatus = index + 1
-                                case "作者":
-                                    columnIndexAuthor = index + 1
-                                case "日期":
-                                    columnIndexTime = index + 1
-                                case "标题":
-                                    columnIndexTitle = index + 1
-                                case "回帖/人气":
-                                    columnIndexNumRead = index + 1
-                                default:
-                                    ""
-                                }
-                            }
-                        }
-                        for row in doc.xpath("//table[last()]/tr[position()>1]") {
-                            let status = row.at_xpath("./td[\(columnIndexStatus)]")
-                            let author = row.at_xpath("./td[\(columnIndexAuthor)]")
-                            print(author?.text)
-                            let time = row.at_xpath("./td[\(columnIndexTime)]")
-                            print(time?.text)
-                            let title = row.at_xpath("./td[\(columnIndexTitle)]")
-                            print("title: " + (title?.text)!)
-                            let numRead = row.at_xpath("./td[\(columnIndexNumRead)]")
-                            print(numRead?.text)
-                            let titleUrl = title?.at_xpath("./a/@href")
-                            print(titleUrl?.text)
-                            self.boardCellDataList.append(BoardCellData(status: status?.text, author: author?.text, time: time?.text, title: title?.text, numRead: numRead?.text, titleUrl: titleUrl?.text))
-                        }
-                        self.contentTableView.reloadData()
-                    }
-                }
-            })
-        }
-        contentTableView.estimatedRowHeight = 150
-        contentTableView.rowHeight = UITableViewAutomaticDimension;
+        let offsetX = CGFloat(index!) * contentScrollView.bounds.width
+        let offset = CGPoint(x: offsetX, y: 0)
+        contentScrollView.setContentOffset(offset, animated: false)
+        scrollViewDidEndScrollingAnimation(contentScrollView)
     }
 }
 extension BoardViewController: UIScrollViewDelegate {
@@ -331,6 +187,8 @@ extension BoardViewController: UIScrollViewDelegate {
      用来切换需要显示的新闻列表和让频道标签处于合适的位置
      */
     func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+        let index = Int(scrollView.contentOffset.x / scrollView.bounds.width)
+        self.currentBoardLabel = self.labelArray[index]
         var offsetX = currentBoardLabel.center.x - self.boardsListScroll.bounds.width * 0.5
         let maxOffset = self.boardsListScroll.contentSize.width - self.boardsListScroll.bounds.width
         if offsetX > 0 {
@@ -342,14 +200,20 @@ extension BoardViewController: UIScrollViewDelegate {
         self.boardsListScroll.setContentOffset(offset, animated: true)
 
         // 切换需要显示的控制器
-        boardType = currentBoardLabel.type
-        boardUrl = currentBoardLabel.url
-        topTenCellDataList.removeAll()
-        boardCellDataList.removeAll()
-        initTable()
-        //let vc = self.newsListVcArray[index]
-        //self.newsContainerView.showViewInScrollView(vc.tableView, showViewIndex: index)
+        let articleListTableViewController = storyboard?.instantiateViewController(withIdentifier: "ArticleListTableViewController") as! ArticleListTableViewController
+        articleListTableViewController.boardType = currentBoardLabel.type
+        articleListTableViewController.boardUrl = currentBoardLabel.url
+        self.addChildViewController(articleListTableViewController)
+        contentScrollView.addSubview(articleListTableViewController.tableView)
+        articleListTableViewController.didMove(toParentViewController: self)
 
+        if currentArticleListTableViewController != nil {
+            currentArticleListTableViewController?.willMove(toParentViewController: nil)
+            currentArticleListTableViewController?.tableView.removeFromSuperview()
+            currentArticleListTableViewController?.removeFromParentViewController()
+        }
+        currentArticleListTableViewController = articleListTableViewController
+        articleListTableViewController.tableView.frame = contentScrollView.bounds
     }
 
 }
