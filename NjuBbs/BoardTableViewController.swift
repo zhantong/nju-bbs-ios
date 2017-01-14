@@ -18,30 +18,6 @@ struct BoardCellData {
     let numRead: String!
     let titleUrl: String!
 }
-extension String {
-    mutating func stringByRepairTr() {
-        do {
-            let nsString = self as NSString
-            let regex = try NSRegularExpression(pattern: "^<tr>.*?(?!</tr>)$", options: [NSRegularExpression.Options.caseInsensitive, NSRegularExpression.Options.anchorsMatchLines])
-            let range = NSMakeRange(0, nsString.length)
-            self = regex.stringByReplacingMatches(in: self, options: [], range: range, withTemplate: "$0</tr>")
-        } catch {
-            print("something wrong")
-            return
-        }
-    }
-    mutating func stringByRepairTd() {
-        do {
-            let nsString = self as NSString
-            let regex = try NSRegularExpression(pattern: "(<td>.*?(?!</td>))(?=<td>|$)", options: [NSRegularExpression.Options.caseInsensitive, NSRegularExpression.Options.anchorsMatchLines])
-            let range = NSMakeRange(0, nsString.length)
-            self = regex.stringByReplacingMatches(in: self, options: [], range: range, withTemplate: "$0</td>")
-        } catch {
-            print("something wrong")
-            return
-        }
-    }
-}
 class BoardTableViewController: UITableViewController {
     let baseUrl = "http://bbs.nju.edu.cn"
     var viaSegue = ""

@@ -9,7 +9,30 @@
 import UIKit
 import Alamofire
 import Kanna
-
+extension String {
+    mutating func stringByRepairTr() {
+        do {
+            let nsString = self as NSString
+            let regex = try NSRegularExpression(pattern: "^<tr>.*?(?!</tr>)$", options: [NSRegularExpression.Options.caseInsensitive, NSRegularExpression.Options.anchorsMatchLines])
+            let range = NSMakeRange(0, nsString.length)
+            self = regex.stringByReplacingMatches(in: self, options: [], range: range, withTemplate: "$0</tr>")
+        } catch {
+            print("something wrong")
+            return
+        }
+    }
+    mutating func stringByRepairTd() {
+        do {
+            let nsString = self as NSString
+            let regex = try NSRegularExpression(pattern: "(<td>.*?(?!</td>))(?=<td>|$)", options: [NSRegularExpression.Options.caseInsensitive, NSRegularExpression.Options.anchorsMatchLines])
+            let range = NSMakeRange(0, nsString.length)
+            self = regex.stringByReplacingMatches(in: self, options: [], range: range, withTemplate: "$0</td>")
+        } catch {
+            print("something wrong")
+            return
+        }
+    }
+}
 class BoardViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     struct TopTenCellData {
         let title: String!
@@ -60,6 +83,13 @@ class BoardViewController: UIViewController, UITableViewDelegate, UITableViewDat
     func initBoardsListScrollView() {
         let label = BoardLabel()
         label.type = 1
+        label.text = "全站十大"
+        label.textColor = UIColor.black
+        label.sizeToFit()
+        label.frame.origin.x = self.labelX(self.labelArray)
+        label.frame.origin.y = (self.boardsListScroll.bounds.height - label.bounds.height) * 0.5
+        label.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(BoardViewController.boardLabelClick(_:))))
+        label.isUserInteractionEnabled = true
         labelArray.append(label)
         boardsListScroll.addSubview(label)
         Alamofire.request(baseUrl + "/bbsall").responseData(completionHandler: {
@@ -101,6 +131,7 @@ class BoardViewController: UIViewController, UITableViewDelegate, UITableViewDat
         let firstBoradLabel = labelArray.first!
         currentBoardLabel = firstBoradLabel
         firstBoradLabel.scale = 1
+        scrollViewDidEndScrollingAnimation(self.boardsListScroll)
     }
 
     override func didReceiveMemoryWarning() {
