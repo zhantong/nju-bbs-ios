@@ -22,6 +22,7 @@ extension String {
             return
         }
     }
+
     mutating func stringByRepairTd() {
         do {
             let nsString = self as NSString
@@ -34,6 +35,7 @@ extension String {
         }
     }
 }
+
 class BoardViewController: UIViewController {
     var boardsListCellDataList = [BoardsListCellData]()
     var currentBoardLabel: BoardLabel!
@@ -59,6 +61,7 @@ class BoardViewController: UIViewController {
         initBoardsListScrollView()
         // Do any additional setup after loading the view.
     }
+
     func initBoardsListScrollView() {
         let label = BoardLabel()
         label.type = 1
@@ -72,46 +75,48 @@ class BoardViewController: UIViewController {
         labelArray.append(label)
         boardsListScroll.addSubview(label)
         Alamofire.request(baseUrl + "/bbsall").responseData(completionHandler: {
-            response in
-            print(response.request!)
-            print(response.response!)
-            print(response.data!)
-            if let data = response.result.value, let content = String(data: data, encoding: String.Encoding(rawValue: CFStringConvertEncodingToNSStringEncoding(CFStringEncoding(CFStringEncodings.GB_18030_2000.rawValue)))) {
-                if let doc = HTML(html: content, encoding: .utf8) {
-                    for row in doc.xpath("//table/tr[position()>1]") {
-                        let board = row.at_xpath("./td[2]")
-                        let category = row.at_xpath("./td[3]")
-                        let name = row.at_xpath("./td[4]")
-                        let moderator = row.at_xpath("./td[5]")
-                        let boardUrl = board?.at_xpath("./a/@href")
-                        self.boardsListCellDataList.append(BoardsListCellData(board: board?.text, category: category?.text, name: name?.text, moderator: moderator?.text, boardUrl: boardUrl?.text?.replacingOccurrences(of: "bbsdoc", with: "bbstdoc")))
+                    response in
+                    print(response.request!)
+                    print(response.response!)
+                    print(response.data!)
+                    if let data = response.result.value, let content = String(data: data, encoding: String.Encoding(rawValue: CFStringConvertEncodingToNSStringEncoding(CFStringEncoding(CFStringEncodings.GB_18030_2000.rawValue)))) {
+                        if let doc = HTML(html: content, encoding: .utf8) {
+                            for row in doc.xpath("//table/tr[position()>1]") {
+                                let board = row.at_xpath("./td[2]")
+                                let category = row.at_xpath("./td[3]")
+                                let name = row.at_xpath("./td[4]")
+                                let moderator = row.at_xpath("./td[5]")
+                                let boardUrl = board?.at_xpath("./a/@href")
+                                self.boardsListCellDataList.append(BoardsListCellData(board: board?.text, category: category?.text, name: name?.text, moderator: moderator?.text, boardUrl: boardUrl?.text?.replacingOccurrences(of: "bbsdoc", with: "bbstdoc")))
+                            }
+                        }
                     }
-                }
-            }
-            for boardsListCellData in self.boardsListCellDataList {
-                let label = BoardLabel()
-                label.type = 2
-                label.url = boardsListCellData.boardUrl
-                label.text = boardsListCellData.name
-                label.textColor = UIColor.black
-                label.sizeToFit()
-                label.frame.origin.x = self.labelX(self.labelArray)
-                label.frame.origin.y = (self.boardsListScroll.bounds.height - label.bounds.height) * 0.5
-                label.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(BoardViewController.boardLabelClick(_:))))
-                label.isUserInteractionEnabled = true
-                self.labelArray.append(label)
-                self.boardsListScroll.addSubview(label)
-            }
-            self.boardsListScroll.contentSize = CGSize(width: self.labelX(self.labelArray), height: 0)
-            self.initContentScrollView()
-            self.initFirstBoard()
-        })
+                    for boardsListCellData in self.boardsListCellDataList {
+                        let label = BoardLabel()
+                        label.type = 2
+                        label.url = boardsListCellData.boardUrl
+                        label.text = boardsListCellData.name
+                        label.textColor = UIColor.black
+                        label.sizeToFit()
+                        label.frame.origin.x = self.labelX(self.labelArray)
+                        label.frame.origin.y = (self.boardsListScroll.bounds.height - label.bounds.height) * 0.5
+                        label.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(BoardViewController.boardLabelClick(_:))))
+                        label.isUserInteractionEnabled = true
+                        self.labelArray.append(label)
+                        self.boardsListScroll.addSubview(label)
+                    }
+                    self.boardsListScroll.contentSize = CGSize(width: self.labelX(self.labelArray), height: 0)
+                    self.initContentScrollView()
+                    self.initFirstBoard()
+                })
     }
+
     func initContentScrollView() {
         contentScrollView.contentSize = CGSize(width: UIScreen.main.bounds.width * CGFloat(labelArray.count), height: 0)
         contentScrollView.isPagingEnabled = true
         contentScrollView.delegate = self
     }
+
     func initFirstBoard() {
         let firstBoradLabel = labelArray.first!
         currentBoardLabel = firstBoradLabel
@@ -150,6 +155,7 @@ class BoardViewController: UIViewController {
         scrollViewDidEndScrollingAnimation(contentScrollView)
     }
 }
+
 extension BoardViewController: UIScrollViewDelegate {
 
     /**

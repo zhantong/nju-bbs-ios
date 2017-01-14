@@ -17,6 +17,7 @@ struct BoardsListCellData {
     let moderator: String!
     let boardUrl: String!
 }
+
 class BoardsListTableViewController: UITableViewController {
     let baseUrl = "http://bbs.nju.edu.cn"
     var cellDataList = [BoardsListCellData]()
@@ -30,25 +31,25 @@ class BoardsListTableViewController: UITableViewController {
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
 
         Alamofire.request(baseUrl + "/bbsall").responseData(completionHandler: {
-            response in
-            print(response.request!)
-            print(response.response!)
-            print(response.data!)
-            if let data = response.result.value, let content = String(data: data, encoding: String.Encoding(rawValue: CFStringConvertEncodingToNSStringEncoding(CFStringEncoding(CFStringEncodings.GB_18030_2000.rawValue)))) {
-                if let doc = HTML(html: content, encoding: .utf8) {
-                    for row in doc.xpath("//table/tr[position()>1]") {
-                        print(row.text)
-                        let board = row.at_xpath("./td[2]")
-                        let category = row.at_xpath("./td[3]")
-                        let name = row.at_xpath("./td[4]")
-                        let moderator = row.at_xpath("./td[5]")
-                        var boardUrl = board?.at_xpath("./a/@href")
-                        self.cellDataList.append(BoardsListCellData(board: board?.text, category: category?.text, name: name?.text, moderator: moderator?.text, boardUrl: boardUrl?.text?.replacingOccurrences(of: "bbsdoc", with: "bbstdoc")))
+                    response in
+                    print(response.request!)
+                    print(response.response!)
+                    print(response.data!)
+                    if let data = response.result.value, let content = String(data: data, encoding: String.Encoding(rawValue: CFStringConvertEncodingToNSStringEncoding(CFStringEncoding(CFStringEncodings.GB_18030_2000.rawValue)))) {
+                        if let doc = HTML(html: content, encoding: .utf8) {
+                            for row in doc.xpath("//table/tr[position()>1]") {
+                                print(row.text)
+                                let board = row.at_xpath("./td[2]")
+                                let category = row.at_xpath("./td[3]")
+                                let name = row.at_xpath("./td[4]")
+                                let moderator = row.at_xpath("./td[5]")
+                                var boardUrl = board?.at_xpath("./a/@href")
+                                self.cellDataList.append(BoardsListCellData(board: board?.text, category: category?.text, name: name?.text, moderator: moderator?.text, boardUrl: boardUrl?.text?.replacingOccurrences(of: "bbsdoc", with: "bbstdoc")))
+                            }
+                            self.tableView.reloadData()
+                        }
                     }
-                    self.tableView.reloadData()
-                }
-            }
-        })
+                })
         tableView.estimatedRowHeight = 150
         tableView.rowHeight = UITableViewAutomaticDimension;
     }
@@ -88,6 +89,7 @@ class BoardsListTableViewController: UITableViewController {
         print(cellData.boardUrl)
         self.performSegue(withIdentifier: "GoToBoard", sender: self)
     }
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "GoToBoard" {
             if let destination = segue.destination as? BoardTableViewController {

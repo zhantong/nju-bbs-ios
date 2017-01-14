@@ -11,6 +11,7 @@ import Alamofire
 import Kanna
 
 class ArticleListTableViewController: UITableViewController {
+
     struct TopTenCellData {
         let title: String!
         let author: String!
@@ -18,6 +19,7 @@ class ArticleListTableViewController: UITableViewController {
         let numReply: String!
         let titleUrl: String!
     }
+
     struct BoardCellData {
         let status: String!
         let author: String!
@@ -26,18 +28,19 @@ class ArticleListTableViewController: UITableViewController {
         let numRead: String!
         let titleUrl: String!
     }
+
     var boardType: Int = 0
     var boardUrl: String = ""
     let baseUrl = "http://bbs.nju.edu.cn"
     var topTenCellDataList = [TopTenCellData]()
     var boardCellDataList = [BoardCellData]()
-    var pullUpLoadMoreLocked=false
-    var isPullUpLoadMoreEnabled=false
-    var moreArticlesUrl=""
-    func requestTopTen(dataHandler:@escaping ([TopTenCellData])->Void){
+    var pullUpLoadMoreLocked = false
+    var isPullUpLoadMoreEnabled = false
+    var moreArticlesUrl = ""
+    func requestTopTen(dataHandler: @escaping ([TopTenCellData]) -> Void) {
         Alamofire.request(baseUrl + "/bbstop10").responseData(completionHandler: {
                     response in
-                    var topTenCellDataList=[TopTenCellData]()
+                    var topTenCellDataList = [TopTenCellData]()
                     print(response.request!)
                     print(response.response!)
                     print(response.data!)
@@ -59,22 +62,23 @@ class ArticleListTableViewController: UITableViewController {
                     dataHandler(topTenCellDataList)
                 })
     }
-    func requestArticleList(url:String,dataHandler:@escaping ([BoardCellData],String) -> Void){
+
+    func requestArticleList(url: String, dataHandler: @escaping ([BoardCellData], String) -> Void) {
         Alamofire.request(baseUrl + "/" + url).responseData(completionHandler: {
                     response in
                     print(response.request!)
                     print(response.response!)
                     print(response.data!)
-                    var boardCellDataList=[BoardCellData]()
-                    var moreArticlesUrl=""
+                    var boardCellDataList = [BoardCellData]()
+                    var moreArticlesUrl = ""
                     if let data = response.result.value, var content = String(data: data, encoding: String.Encoding(rawValue: CFStringConvertEncodingToNSStringEncoding(CFStringEncoding(CFStringEncodings.GB_18030_2000.rawValue)))) {
                         content.stringByRepairTd()
                         content.stringByRepairTr()
                         print(content)
                         if let doc = HTML(html: content, encoding: .utf8) {
                             let tableHead = doc.at_xpath("//table[last()]/tr[1]")
-                            moreArticlesUrl=doc.at_xpath("//a[text()='上一页']/@href")?.text ?? ""
-                            print("more articles url: ",self.moreArticlesUrl)
+                            moreArticlesUrl = doc.at_xpath("//a[text()='上一页']/@href")?.text ?? ""
+                            print("more articles url: ", self.moreArticlesUrl)
                             var columnIndexStatus = 0, columnIndexAuthor = 0, columnIndexTime = 0, columnIndexTitle = 0, columnIndexNumRead = 0
                             for (index, headItem) in (tableHead?.xpath("./td").enumerated())! {
                                 if let item = headItem.text?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) {
@@ -110,19 +114,20 @@ class ArticleListTableViewController: UITableViewController {
                             }
                         }
                     }
-                    dataHandler(boardCellDataList,moreArticlesUrl)
+                    dataHandler(boardCellDataList, moreArticlesUrl)
                 })
     }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         refreshControl?.addTarget(self, action: #selector(refresh), for: .valueChanged)
-        refreshControl?.attributedTitle=NSAttributedString(string:"下拉刷新")
-        if boardType==1{
-            isPullUpLoadMoreEnabled=false
-        }else if boardType==2{
-            isPullUpLoadMoreEnabled=true
+        refreshControl?.attributedTitle = NSAttributedString(string: "下拉刷新")
+        if boardType == 1 {
+            isPullUpLoadMoreEnabled = false
+        } else if boardType == 2 {
+            isPullUpLoadMoreEnabled = true
         }
-        if isPullUpLoadMoreEnabled{
+        if isPullUpLoadMoreEnabled {
             initPollUpLoadMore()
         }
 
@@ -134,52 +139,55 @@ class ArticleListTableViewController: UITableViewController {
         if boardType == 1 {
             requestTopTen(dataHandler: {
                 data in
-                self.topTenCellDataList=data
+                self.topTenCellDataList = data
                 self.tableView.reloadData()
             })
         } else if boardType == 2 {
             requestArticleList(url: boardUrl, dataHandler: {
-                data,moreArticlesUrl in
-                self.boardCellDataList+=data
-                self.moreArticlesUrl=moreArticlesUrl
+                data, moreArticlesUrl in
+                self.boardCellDataList += data
+                self.moreArticlesUrl = moreArticlesUrl
                 self.tableView.reloadData()
             })
         }
         tableView.estimatedRowHeight = 150
         tableView.rowHeight = UITableViewAutomaticDimension;
     }
-    func refresh(){
+
+    func refresh() {
         if boardType == 1 {
             requestTopTen(dataHandler: {
                 data in
                 self.topTenCellDataList.removeAll()
-                self.topTenCellDataList=data
+                self.topTenCellDataList = data
                 self.tableView.reloadData()
                 self.refreshControl?.endRefreshing()
             })
         } else if boardType == 2 {
             requestArticleList(url: boardUrl, dataHandler: {
-                data,moreArticlesUrl in
+                data, moreArticlesUrl in
                 self.boardCellDataList.removeAll()
-                self.boardCellDataList=data
-                self.moreArticlesUrl=moreArticlesUrl
+                self.boardCellDataList = data
+                self.moreArticlesUrl = moreArticlesUrl
                 self.tableView.reloadData()
                 self.refreshControl?.endRefreshing()
             })
         }
     }
-    func initPollUpLoadMore(){
-        tableView.tableFooterView=UIView(frame: CGRect(x: 0, y: tableView.contentSize.height, width: tableView.bounds.size.width, height: 60))
+
+    func initPollUpLoadMore() {
+        tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: tableView.contentSize.height, width: tableView.bounds.size.width, height: 60))
         tableView.tableFooterView?.autoresizingMask = .flexibleWidth
-        
-        let activityViewIndicator=UIActivityIndicatorView(activityIndicatorStyle: .white)
+
+        let activityViewIndicator = UIActivityIndicatorView(activityIndicatorStyle: .white)
         activityViewIndicator.color = .darkGray
-        let indicatorX=(tableView.tableFooterView?.frame.size.width)!/2-activityViewIndicator.frame.width/2
-        let indicatorY=(tableView.tableFooterView?.frame.size.height)!/2-activityViewIndicator.frame.height/2
-        activityViewIndicator.frame=CGRect(x: indicatorX, y: indicatorY, width: activityViewIndicator.frame.width, height: activityViewIndicator.frame.height)
+        let indicatorX = (tableView.tableFooterView?.frame.size.width)! / 2 - activityViewIndicator.frame.width / 2
+        let indicatorY = (tableView.tableFooterView?.frame.size.height)! / 2 - activityViewIndicator.frame.height / 2
+        activityViewIndicator.frame = CGRect(x: indicatorX, y: indicatorY, width: activityViewIndicator.frame.width, height: activityViewIndicator.frame.height)
         activityViewIndicator.startAnimating()
         tableView.tableFooterView?.addSubview(activityViewIndicator)
     }
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -211,10 +219,10 @@ class ArticleListTableViewController: UITableViewController {
             cell.boardLabel.text = topTenCellDataList[indexPath.row].board?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
             cell.numReplyLabel.text = topTenCellDataList[indexPath.row].numReply?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
 
-            if isPullUpLoadMoreEnabled && !pullUpLoadMoreLocked&&indexPath.row==topTenCellDataList.count-1{
+            if isPullUpLoadMoreEnabled && !pullUpLoadMoreLocked && indexPath.row == topTenCellDataList.count - 1 {
                 loadMore()
             }
-            
+
             return cell
         } else if boardType == 2 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "BoardTableViewCell", for: indexPath) as! BoardTableViewCell
@@ -225,28 +233,31 @@ class ArticleListTableViewController: UITableViewController {
             cell.titleLabel.text = boardCellDataList[indexPath.row].title?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
             cell.numReadLabel.text = boardCellDataList[indexPath.row].numRead?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
 
-            if isPullUpLoadMoreEnabled && !pullUpLoadMoreLocked&&indexPath.row==boardCellDataList.count-1{
+            if isPullUpLoadMoreEnabled && !pullUpLoadMoreLocked && indexPath.row == boardCellDataList.count - 1 {
                 loadMore()
             }
-            
+
             return cell
         }
-        
+
         return UITableViewCell()
     }
-    func loadMore(){
-        pullUpLoadMoreLocked=true
+
+    func loadMore() {
+        pullUpLoadMoreLocked = true
         requestArticleList(url: moreArticlesUrl, dataHandler: {
-            data,moreArticlesUrl in
-            self.boardCellDataList+=data
-            self.moreArticlesUrl=moreArticlesUrl
+            data, moreArticlesUrl in
+            self.boardCellDataList += data
+            self.moreArticlesUrl = moreArticlesUrl
             self.tableView.reloadData()
         })
-        pullUpLoadMoreLocked=false
+        pullUpLoadMoreLocked = false
     }
+
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         self.performSegue(withIdentifier: "GoToArticle", sender: self)
     }
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "GoToArticle" {
             if let destination = segue.destination as? ArticleTableViewController {
