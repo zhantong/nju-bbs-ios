@@ -14,7 +14,7 @@ import Darwin.POSIX.iconv
 class ASTableViewController: ASViewController<ASDisplayNode>, ASTableDataSource, ASTableDelegate {
 
     struct ArticleCellData {
-        let content: NSAttributedString!
+        let content: String!
         let author: String!
         let time: String!
     }
@@ -36,7 +36,6 @@ class ASTableViewController: ASViewController<ASDisplayNode>, ASTableDataSource,
                     if let data = response.result.value {
                         let nsData = data as NSData
                         var content = try! IconV.convertCString(cstr: nsData.bytes.assumingMemoryBound(to: Int8.self), length: nsData.length, fromEncodingNamed: "GBK//IGNORE")
-                        content.stringByRemovingRegexMatches()
                         content.stringByRemovingUnsupportedColor()
                         print("preparing content")
                         let contentNsString = content as NSString
@@ -73,11 +72,8 @@ class ASTableViewController: ASViewController<ASDisplayNode>, ASTableDataSource,
                                     let dateTimeDate = dateFormatter.date(from: time) ?? Date()
                                     dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
                                     time = dateFormatter.string(from: dateTimeDate)
-
-                                    content = content.replacingOccurrences(of: "\n", with: "<br/>")
                                     print("author: " + author)
-                                    let attributedContent = try! NSAttributedString(data: content.data(using: .utf8)!, options: [NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType, NSCharacterEncodingDocumentAttribute: String.Encoding.utf8.rawValue], documentAttributes: nil)
-                                    articleCellDataList.append(ArticleCellData(content: attributedContent, author: author, time: time))
+                                    articleCellDataList.append(ArticleCellData(content: content, author: author, time: time))
                                 }
                             }
                         }
@@ -129,7 +125,7 @@ class ASTableViewController: ASViewController<ASDisplayNode>, ASTableDataSource,
 
     func tableNode(_ tableNode: ASTableNode, nodeForRowAt indexPath: IndexPath) -> ASCellNode {
         let node = ArticleCell()
-        node.configureData(content: cellDataList[indexPath.row].content, author: NSAttributedString(string: cellDataList[indexPath.row].author), time: NSAttributedString(string: cellDataList[indexPath.row].time))
+        node.configureData(content: cellDataList[indexPath.row].content, author: cellDataList[indexPath.row].author, time: cellDataList[indexPath.row].time)
         return node
     }
 
