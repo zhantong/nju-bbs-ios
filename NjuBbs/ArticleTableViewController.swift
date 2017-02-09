@@ -9,11 +9,6 @@
 import UIKit
 import Alamofire
 
-struct ArticleCellData {
-    let content: NSAttributedString!
-    let author: String!
-    let time: String!
-}
 
 extension String {
     var utf8Data: Data? {
@@ -44,22 +39,36 @@ extension String {
 }
 
 class ArticleTableViewController: UITableViewController {
+
+    struct ArticleCellData {
+        let content: NSAttributedString!
+        let author: String!
+        let time: String!
+    }
+
     var viaSegue = ""
     var cellDataList = [ArticleCellData]()
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        print(viaSegue)
-        Alamofire.request(viaSegue).responseData(completionHandler: {
+    var moreArticlesUrl = ""
+    var pullUpLoadMoreLocked = false
+    let baseUrl = "http://bbs.nju.edu.cn"
+    func requestArticles(url: String, dataHandler: @escaping ([ArticleCellData], String) -> Void) {
+        Alamofire.request(url).responseData(completionHandler: {
                     response in
                     print(response.request!)
                     print(response.response!)
                     print(response.data!)
-                    self.tableView.reloadData()
+                    var articleCellDataList = [ArticleCellData]()
+                    var moreArticlesUrl = ""
                     if let data = response.result.value, var content = String(data: data, encoding: String.Encoding(rawValue: CFStringConvertEncodingToNSStringEncoding(CFStringEncoding(CFStringEncodings.GB_18030_2000.rawValue)))) {
                         content.stringByRemovingRegexMatches()
                         content.stringByRemovingUnsupportedColor()
-                        let tablesReg = try! NSRegularExpression(pattern: "<table.*?>(.*?)</table>", options: NSRegularExpression.Options.dotMatchesLineSeparators)
                         let contentNsString = content as NSString
+                        let nextPageUrlReg = try! NSRegularExpression(pattern: "<a\\s*href=(.*?)>本主题下30篇</a>", options: NSRegularExpression.Options.caseInsensitive)
+                        let match = nextPageUrlReg.firstMatch(in: content, options: [], range: NSRange(location: 0, length: contentNsString.length))
+                        if match != nil {
+                            moreArticlesUrl = contentNsString.substring(with: match!.rangeAt(1))
+                        }
+                        let tablesReg = try! NSRegularExpression(pattern: "<table.*?>(.*?)</table>", options: NSRegularExpression.Options.dotMatchesLineSeparators)
                         let matches = tablesReg.matches(in: content, options: [], range: NSRange(location: 0, length: contentNsString.length))
                         for match in matches {
                             let tableContent = contentNsString.substring(with: match.rangeAt(1))
@@ -85,13 +94,38 @@ class ArticleTableViewController: UITableViewController {
 
                                     content = content.replacingOccurrences(of: "\n", with: "<br/>")
                                     let attributedContent = try! NSAttributedString(data: content.data(using: .utf8)!, options: [NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType, NSCharacterEncodingDocumentAttribute: String.Encoding.utf8.rawValue], documentAttributes: nil)
-                                    self.cellDataList.append(ArticleCellData(content: attributedContent, author: author, time: time))
+                                    articleCellDataList.append(ArticleCellData(content: attributedContent, author: author, time: time))
                                 }
                             }
                         }
                     }
-                    self.tableView.reloadData()
+                    dataHandler(articleCellDataList, moreArticlesUrl)
                 })
+    }
+
+    func initPollUpLoadMore() {
+        tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: tableView.contentSize.height, width: tableView.bounds.size.width, height: 60))
+        tableView.tableFooterView?.autoresizingMask = .flexibleWidth
+
+        let activityViewIndicator = UIActivityIndicatorView(activityIndicatorStyle: .white)
+        activityViewIndicator.color = .darkGray
+        let indicatorX = (tableView.tableFooterView?.frame.size.width)! / 2 - activityViewIndicator.frame.width / 2
+        let indicatorY = (tableView.tableFooterView?.frame.size.height)! / 2 - activityViewIndicator.frame.height / 2
+        activityViewIndicator.frame = CGRect(x: indicatorX, y: indicatorY, width: activityViewIndicator.frame.width, height: activityViewIndicator.frame.height)
+        activityViewIndicator.startAnimating()
+        tableView.tableFooterView?.addSubview(activityViewIndicator)
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        print(viaSegue)
+        initPollUpLoadMore()
+        requestArticles(url: viaSegue, dataHandler: {
+            data, moreArticlesUrl in
+            self.cellDataList = data
+            self.moreArticlesUrl = self.baseUrl + "/" + moreArticlesUrl
+            self.tableView.reloadData()
+        })
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -125,14 +159,27 @@ class ArticleTableViewController: UITableViewController {
         cell.authorLabel.text = cellDataList[indexPath.row].author
         cell.timeLabel.text = cellDataList[indexPath.row].time
 
-
+        if !pullUpLoadMoreLocked && indexPath.row == cellDataList.count - 1 {
+            loadMore()
+        }
 
         // Configure the cell...
 
         return cell
     }
 
-
+    func loadMore() {
+        pullUpLoadMoreLocked = true
+        if moreArticlesUrl != "" {
+            requestArticles(url: moreArticlesUrl, dataHandler: {
+                data, moreArticlesUrl in
+                self.cellDataList += data
+                self.moreArticlesUrl = self.baseUrl + "/" + moreArticlesUrl
+                self.tableView.reloadData()
+            })
+        }
+        pullUpLoadMoreLocked = false
+    }
     /*
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
