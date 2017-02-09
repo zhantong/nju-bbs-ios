@@ -255,12 +255,24 @@ class ArticleListTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.performSegue(withIdentifier: "GoToArticle", sender: self)
+        //self.performSegue(withIdentifier: "GoToArticle", sender: self)
+        self.performSegue(withIdentifier: "GoToAS", sender: self)
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "GoToArticle" {
             if let destination = segue.destination as? ArticleTableViewController {
+                let indexPath = tableView.indexPathForSelectedRow
+                if boardType == 1 {
+                    destination.viaSegue = baseUrl + "/" + topTenCellDataList[(indexPath?.row)!].titleUrl
+                } else if boardType == 2 {
+                    destination.viaSegue = baseUrl + "/" + boardCellDataList[(indexPath?.row)!].titleUrl
+                }
+
+            }
+        }
+        if segue.identifier == "GoToAS" {
+            if let destination = segue.destination as? ArticleViewController {
                 let indexPath = tableView.indexPathForSelectedRow
                 if boardType == 1 {
                     destination.viaSegue = baseUrl + "/" + topTenCellDataList[(indexPath?.row)!].titleUrl

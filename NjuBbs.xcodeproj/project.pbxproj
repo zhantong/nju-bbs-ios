@@ -14,8 +14,12 @@
 		211AA5141E2625D700D5C690 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 211AA5121E2625D700D5C690 /* LaunchScreen.storyboard */; };
 		211AA51F1E2625D700D5C690 /* NjuBbsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 211AA51E1E2625D700D5C690 /* NjuBbsTests.swift */; };
 		211AA52A1E2625D700D5C690 /* NjuBbsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 211AA5291E2625D700D5C690 /* NjuBbsUITests.swift */; };
+		212387E21E2CB8FC00E17D09 /* IconV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 212387E11E2CB8FC00E17D09 /* IconV.swift */; };
 		212771A91E2642C00050C3F1 /* TopTenTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 212771A81E2642C00050C3F1 /* TopTenTableViewCell.swift */; };
 		212B40DE1E28910700F83BB9 /* BoardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 212B40DD1E28910700F83BB9 /* BoardViewController.swift */; };
+		215B08F41E2B347D005A6D28 /* ArticleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215B08F31E2B347D005A6D28 /* ArticleViewController.swift */; };
+		215B08F61E2B3AF7005A6D28 /* ArticleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215B08F51E2B3AF7005A6D28 /* ArticleCell.swift */; };
+		215B08F81E2B6BDD005A6D28 /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 215B08F71E2B6BDD005A6D28 /* libiconv.tbd */; };
 		216B5F041E28FA2900589328 /* BoardLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 216B5F031E28FA2900589328 /* BoardLabel.swift */; };
 		2187A6791E27BBC00025933B /* BoardsListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2187A6781E27BBC00025933B /* BoardsListTableViewController.swift */; };
 		2187A67B1E27BC080025933B /* BoardsListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2187A67A1E27BC080025933B /* BoardsListTableViewCell.swift */; };
@@ -24,6 +28,7 @@
 		218A52201E265ABB0073494A /* ArticleTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218A521F1E265ABB0073494A /* ArticleTableViewController.swift */; };
 		218A52221E2671DB0073494A /* ArticleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218A52211E2671DB0073494A /* ArticleTableViewCell.swift */; };
 		218B7DFB1E29B5470046C45E /* ArticleListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218B7DFA1E29B5470046C45E /* ArticleListTableViewController.swift */; };
+		21E2495B1E2B0DE8007914FE /* ASTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21E2495A1E2B0DE8007914FE /* ASTableViewController.swift */; };
 		F1B436564D0C767D6BA73F98 /* Pods_NjuBbs.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C0E905B444DD709EF552799 /* Pods_NjuBbs.framework */; };
 /* End PBXBuildFile section */
 
@@ -58,8 +63,12 @@
 		211AA5251E2625D700D5C690 /* NjuBbsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NjuBbsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		211AA5291E2625D700D5C690 /* NjuBbsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NjuBbsUITests.swift; sourceTree = "<group>"; };
 		211AA52B1E2625D700D5C690 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		212387E11E2CB8FC00E17D09 /* IconV.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IconV.swift; sourceTree = "<group>"; };
 		212771A81E2642C00050C3F1 /* TopTenTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopTenTableViewCell.swift; sourceTree = "<group>"; };
 		212B40DD1E28910700F83BB9 /* BoardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardViewController.swift; sourceTree = "<group>"; };
+		215B08F31E2B347D005A6D28 /* ArticleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArticleViewController.swift; sourceTree = "<group>"; };
+		215B08F51E2B3AF7005A6D28 /* ArticleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArticleCell.swift; sourceTree = "<group>"; };
+		215B08F71E2B6BDD005A6D28 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
 		216B5F031E28FA2900589328 /* BoardLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardLabel.swift; sourceTree = "<group>"; };
 		2187A6781E27BBC00025933B /* BoardsListTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardsListTableViewController.swift; sourceTree = "<group>"; };
 		2187A67A1E27BC080025933B /* BoardsListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardsListTableViewCell.swift; sourceTree = "<group>"; };
@@ -68,6 +77,7 @@
 		218A521F1E265ABB0073494A /* ArticleTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArticleTableViewController.swift; sourceTree = "<group>"; };
 		218A52211E2671DB0073494A /* ArticleTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArticleTableViewCell.swift; sourceTree = "<group>"; };
 		218B7DFA1E29B5470046C45E /* ArticleListTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArticleListTableViewController.swift; sourceTree = "<group>"; };
+		21E2495A1E2B0DE8007914FE /* ASTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ASTableViewController.swift; sourceTree = "<group>"; };
 		35C35FC13575B9A3A1D2978B /* Pods-NjuBbs.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NjuBbs.release.xcconfig"; path = "Pods/Target Support Files/Pods-NjuBbs/Pods-NjuBbs.release.xcconfig"; sourceTree = "<group>"; };
 		4C0E905B444DD709EF552799 /* Pods_NjuBbs.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NjuBbs.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E8B845F33A86885ED3161609 /* Pods-NjuBbs.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NjuBbs.debug.xcconfig"; path = "Pods/Target Support Files/Pods-NjuBbs/Pods-NjuBbs.debug.xcconfig"; sourceTree = "<group>"; };
@@ -78,6 +88,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				215B08F81E2B6BDD005A6D28 /* libiconv.tbd in Frameworks */,
 				F1B436564D0C767D6BA73F98 /* Pods_NjuBbs.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -102,6 +113,7 @@
 		0750A71B94CD655AD893A10A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				215B08F71E2B6BDD005A6D28 /* libiconv.tbd */,
 				4C0E905B444DD709EF552799 /* Pods_NjuBbs.framework */,
 			);
 			name = Frameworks;
@@ -134,6 +146,8 @@
 			children = (
 				211AA5061E2625D700D5C690 /* AppDelegate.swift */,
 				211AA50A1E2625D700D5C690 /* Main.storyboard */,
+				215B08F31E2B347D005A6D28 /* ArticleViewController.swift */,
+				212387E11E2CB8FC00E17D09 /* IconV.swift */,
 				218B7DFA1E29B5470046C45E /* ArticleListTableViewController.swift */,
 				212B40DD1E28910700F83BB9 /* BoardViewController.swift */,
 				216B5F031E28FA2900589328 /* BoardLabel.swift */,
@@ -148,6 +162,8 @@
 				211AA5121E2625D700D5C690 /* LaunchScreen.storyboard */,
 				211AA5151E2625D700D5C690 /* Info.plist */,
 				211AA50D1E2625D700D5C690 /* NjuBbs.xcdatamodeld */,
+				21E2495A1E2B0DE8007914FE /* ASTableViewController.swift */,
+				215B08F51E2B3AF7005A6D28 /* ArticleCell.swift */,
 			);
 			path = NjuBbs;
 			sourceTree = "<group>";
@@ -251,6 +267,7 @@
 					211AA5021E2625D700D5C690 = {
 						CreatedOnToolsVersion = 8.2;
 						DevelopmentTeam = 2CZEJUQUR6;
+						LastSwiftMigration = 0820;
 						ProvisioningStyle = Automatic;
 					};
 					211AA5191E2625D700D5C690 = {
@@ -374,8 +391,12 @@
 				211AA5071E2625D700D5C690 /* AppDelegate.swift in Sources */,
 				2187A6791E27BBC00025933B /* BoardsListTableViewController.swift in Sources */,
 				218B7DFB1E29B5470046C45E /* ArticleListTableViewController.swift in Sources */,
+				21E2495B1E2B0DE8007914FE /* ASTableViewController.swift in Sources */,
+				215B08F61E2B3AF7005A6D28 /* ArticleCell.swift in Sources */,
 				218A52201E265ABB0073494A /* ArticleTableViewController.swift in Sources */,
+				215B08F41E2B347D005A6D28 /* ArticleViewController.swift in Sources */,
 				218A52221E2671DB0073494A /* ArticleTableViewCell.swift in Sources */,
+				212387E21E2CB8FC00E17D09 /* IconV.swift in Sources */,
 				2187A67D1E27C1EB0025933B /* BoardTableViewController.swift in Sources */,
 				211AA50F1E2625D700D5C690 /* NjuBbs.xcdatamodeld in Sources */,
 				212B40DE1E28910700F83BB9 /* BoardViewController.swift in Sources */,
@@ -531,12 +552,16 @@
 			baseConfigurationReference = E8B845F33A86885ED3161609 /* Pods-NjuBbs.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = 2CZEJUQUR6;
 				INFOPLIST_FILE = NjuBbs/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.polarxiong.NjuBbs;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -546,12 +571,15 @@
 			baseConfigurationReference = 35C35FC13575B9A3A1D2978B /* Pods-NjuBbs.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = 2CZEJUQUR6;
 				INFOPLIST_FILE = NjuBbs/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.polarxiong.NjuBbs;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
