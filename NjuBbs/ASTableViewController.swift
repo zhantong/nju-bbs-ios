@@ -11,7 +11,7 @@ import AsyncDisplayKit
 import Alamofire
 import Darwin.POSIX.iconv
 
-class ASTableViewController: ASViewController<ASDisplayNode>, ASTableDataSource, ASTableDelegate {
+class ASTableViewController: ASViewController<ASTableNode>, ASTableDataSource, ASTableDelegate {
 
     struct ArticleCellData {
         let content: String!
@@ -27,6 +27,7 @@ class ASTableViewController: ASViewController<ASDisplayNode>, ASTableDataSource,
     func requestArticles(url: String, dataHandler: @escaping ([ArticleCellData], String) -> Void) {
         Alamofire.request(url).responseData(completionHandler: {
                     response in
+                    print("url:", url)
                     print(response.request!)
                     print(response.response!)
                     print(response.data!)

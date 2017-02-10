@@ -17,7 +17,6 @@
 		212387E21E2CB8FC00E17D09 /* IconV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 212387E11E2CB8FC00E17D09 /* IconV.swift */; };
 		212771A91E2642C00050C3F1 /* TopTenTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 212771A81E2642C00050C3F1 /* TopTenTableViewCell.swift */; };
 		212B40DE1E28910700F83BB9 /* BoardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 212B40DD1E28910700F83BB9 /* BoardViewController.swift */; };
-		215B08F41E2B347D005A6D28 /* ArticleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215B08F31E2B347D005A6D28 /* ArticleViewController.swift */; };
 		215B08F61E2B3AF7005A6D28 /* ArticleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215B08F51E2B3AF7005A6D28 /* ArticleCell.swift */; };
 		215B08F81E2B6BDD005A6D28 /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 215B08F71E2B6BDD005A6D28 /* libiconv.tbd */; };
 		216B5F041E28FA2900589328 /* BoardLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 216B5F031E28FA2900589328 /* BoardLabel.swift */; };
@@ -66,7 +65,6 @@
 		212387E11E2CB8FC00E17D09 /* IconV.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IconV.swift; sourceTree = "<group>"; };
 		212771A81E2642C00050C3F1 /* TopTenTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopTenTableViewCell.swift; sourceTree = "<group>"; };
 		212B40DD1E28910700F83BB9 /* BoardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardViewController.swift; sourceTree = "<group>"; };
-		215B08F31E2B347D005A6D28 /* ArticleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArticleViewController.swift; sourceTree = "<group>"; };
 		215B08F51E2B3AF7005A6D28 /* ArticleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArticleCell.swift; sourceTree = "<group>"; };
 		215B08F71E2B6BDD005A6D28 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
 		216B5F031E28FA2900589328 /* BoardLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardLabel.swift; sourceTree = "<group>"; };
@@ -146,7 +144,6 @@
 			children = (
 				211AA5061E2625D700D5C690 /* AppDelegate.swift */,
 				211AA50A1E2625D700D5C690 /* Main.storyboard */,
-				215B08F31E2B347D005A6D28 /* ArticleViewController.swift */,
 				212387E11E2CB8FC00E17D09 /* IconV.swift */,
 				218B7DFA1E29B5470046C45E /* ArticleListTableViewController.swift */,
 				212B40DD1E28910700F83BB9 /* BoardViewController.swift */,
@@ -394,7 +391,6 @@
 				21E2495B1E2B0DE8007914FE /* ASTableViewController.swift in Sources */,
 				215B08F61E2B3AF7005A6D28 /* ArticleCell.swift in Sources */,
 				218A52201E265ABB0073494A /* ArticleTableViewController.swift in Sources */,
-				215B08F41E2B347D005A6D28 /* ArticleViewController.swift in Sources */,
 				218A52221E2671DB0073494A /* ArticleTableViewCell.swift in Sources */,
 				212387E21E2CB8FC00E17D09 /* IconV.swift in Sources */,
 				2187A67D1E27C1EB0025933B /* BoardTableViewController.swift in Sources */,
