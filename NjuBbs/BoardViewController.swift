@@ -9,6 +9,7 @@
 import UIKit
 import Alamofire
 import Kanna
+import CoreData
 
 extension String {
     mutating func stringByRepairTr() {
@@ -40,6 +41,7 @@ class BoardViewController: UIViewController {
     var boardsListCellDataList = [BoardsListCellData]()
     var currentBoardLabel: BoardLabel!
     var labelArray: [BoardLabel] = []
+    var needReload = false
     var currentArticleListTableViewController: ArticleListTableViewController? = nil
     let baseUrl = "http://bbs.nju.edu.cn"
     let realSelf = self
@@ -55,6 +57,12 @@ class BoardViewController: UIViewController {
     @IBOutlet weak var boardsListScroll: UIScrollView!
 
     @IBOutlet weak var contentScrollView: UIScrollView!
+
+    @IBAction func edit(_ sender: UIButton) {
+        needReload = true
+        performSegue(withIdentifier: "editPreferred", sender: sender)
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         automaticallyAdjustsScrollViewInsets = false
@@ -62,7 +70,19 @@ class BoardViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        if needReload {
+            initBoardsListScrollView()
+            needReload = false
+        }
+    }
+
     func initBoardsListScrollView() {
+        for label in labelArray {
+            label.removeFromSuperview()
+        }
+        labelArray.removeAll()
+        boardsListCellDataList.removeAll()
         let label = BoardLabel()
         label.type = 1
         label.text = "全站十大"
@@ -70,45 +90,28 @@ class BoardViewController: UIViewController {
         label.sizeToFit()
         label.frame.origin.x = self.labelX(self.labelArray)
         label.frame.origin.y = (self.boardsListScroll.bounds.height - label.bounds.height) * 0.5
-        label.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(BoardViewController.boardLabelClick(_:))))
+        label.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(BoardViewController.boardLabelClick(recognizer:))))
         label.isUserInteractionEnabled = true
         labelArray.append(label)
         boardsListScroll.addSubview(label)
-        Alamofire.request(baseUrl + "/bbsall").responseData(completionHandler: {
-                    response in
-                    print(response.request!)
-                    print(response.response!)
-                    print(response.data!)
-                    if let data = response.result.value, let content = String(data: data, encoding: String.Encoding(rawValue: CFStringConvertEncodingToNSStringEncoding(CFStringEncoding(CFStringEncodings.GB_18030_2000.rawValue)))) {
-                        if let doc = HTML(html: content, encoding: .utf8) {
-                            for row in doc.xpath("//table/tr[position()>1]") {
-                                let board = row.at_xpath("./td[2]")
-                                let category = row.at_xpath("./td[3]")
-                                let name = row.at_xpath("./td[4]")
-                                let moderator = row.at_xpath("./td[5]")
-                                let boardUrl = board?.at_xpath("./a/@href")
-                                self.boardsListCellDataList.append(BoardsListCellData(board: board?.text, category: category?.text, name: name?.text, moderator: moderator?.text, boardUrl: boardUrl?.text?.replacingOccurrences(of: "bbsdoc", with: "bbstdoc")))
-                            }
-                        }
-                    }
-                    for boardsListCellData in self.boardsListCellDataList {
-                        let label = BoardLabel()
-                        label.type = 2
-                        label.url = boardsListCellData.boardUrl
-                        label.text = boardsListCellData.name
-                        label.textColor = UIColor.black
-                        label.sizeToFit()
-                        label.frame.origin.x = self.labelX(self.labelArray)
-                        label.frame.origin.y = (self.boardsListScroll.bounds.height - label.bounds.height) * 0.5
-                        label.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(BoardViewController.boardLabelClick(_:))))
-                        label.isUserInteractionEnabled = true
-                        self.labelArray.append(label)
-                        self.boardsListScroll.addSubview(label)
-                    }
-                    self.boardsListScroll.contentSize = CGSize(width: self.labelX(self.labelArray), height: 0)
-                    self.initContentScrollView()
-                    self.initFirstBoard()
-                })
+        getAllBoards()
+        for boardsListCellData in self.boardsListCellDataList {
+            let label = BoardLabel()
+            label.type = 2
+            label.url = boardsListCellData.boardUrl
+            label.text = boardsListCellData.name
+            label.textColor = UIColor.black
+            label.sizeToFit()
+            label.frame.origin.x = self.labelX(self.labelArray)
+            label.frame.origin.y = (self.boardsListScroll.bounds.height - label.bounds.height) * 0.5
+            label.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(BoardViewController.boardLabelClick(recognizer:))))
+            label.isUserInteractionEnabled = true
+            self.labelArray.append(label)
+            self.boardsListScroll.addSubview(label)
+        }
+        self.boardsListScroll.contentSize = CGSize(width: self.labelX(self.labelArray), height: 0)
+        self.initContentScrollView()
+        boardLabelClick(label: labelArray.first!)
     }
 
     func initContentScrollView() {
@@ -117,18 +120,29 @@ class BoardViewController: UIViewController {
         contentScrollView.delegate = self
     }
 
-    func initFirstBoard() {
-        let firstBoradLabel = labelArray.first!
-        currentBoardLabel = firstBoradLabel
-        firstBoradLabel.scale = 1
-        scrollViewDidEndScrollingAnimation(self.boardsListScroll)
-    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
 
+    func getContext() -> NSManagedObjectContext {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        return appDelegate.persistentContainer.viewContext
+    }
+
+    func getAllBoards() {
+        let fetchRequestPreferred = NSFetchRequest<NSFetchRequestResult>(entityName: "Board")
+        fetchRequestPreferred.predicate = NSPredicate(format: "preferred == YES")
+        do {
+            let searchResultPreferred = try getContext().fetch(fetchRequestPreferred)
+            for board in (searchResultPreferred as! [NSManagedObject]) {
+                self.boardsListCellDataList.append(BoardsListCellData(board: board.value(forKey: "code") as! String!, category: board.value(forKey: "category") as! String!, name: board.value(forKey: "name") as! String!, moderator: board.value(forKey: "moderator") as! String!, boardUrl: board.value(forKey: "url") as! String!))
+            }
+        } catch {
+            print(error)
+        }
+    }
 
 
     /*
@@ -140,14 +154,17 @@ class BoardViewController: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
-    func boardLabelClick(_ recognizer: UITapGestureRecognizer) {
+    func boardLabelClick(recognizer: UITapGestureRecognizer) {
 
         let label = recognizer.view as! BoardLabel
+        boardLabelClick(label: label)
+    }
+
+    func boardLabelClick(label: BoardLabel) {
         let index = labelArray.index(of: label)
 
-        currentBoardLabel.scale = 0
+        currentBoardLabel?.scale = 0
         label.scale = 1
-        //currentBoardLabel = label
 
         let offsetX = CGFloat(index!) * contentScrollView.bounds.width
         let offset = CGPoint(x: offsetX, y: 0)

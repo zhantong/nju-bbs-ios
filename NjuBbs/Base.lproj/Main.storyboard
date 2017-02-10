@@ -23,7 +23,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView autoresizesSubviews="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TV7-Gm-gl7">
-                                <rect key="frame" x="0.0" y="64" width="375" height="30"/>
+                                <rect key="frame" x="0.0" y="64" width="344" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="NAK-eX-8RZ"/>
                                 </constraints>
@@ -31,22 +31,39 @@
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9iw-IC-aXJ">
                                 <rect key="frame" x="0.0" y="94" width="375" height="524"/>
                             </scrollView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ttz-XW-Uok">
+                                <rect key="frame" x="344" y="64" width="31" height="30"/>
+                                <state key="normal" title="设置"/>
+                                <connections>
+                                    <action selector="edit:" destination="gsn-XO-LTY" eventType="touchUpInside" id="Ac9-8U-RHL"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="TV7-Gm-gl7" firstAttribute="leading" secondItem="N0b-c6-Yor" secondAttribute="leading" id="1Ml-AX-nci"/>
+                            <constraint firstItem="Ttz-XW-Uok" firstAttribute="leading" secondItem="TV7-Gm-gl7" secondAttribute="trailing" id="1Pp-Lx-Wrc"/>
+                            <constraint firstItem="Ttz-XW-Uok" firstAttribute="top" secondItem="rhF-9a-G5n" secondAttribute="bottom" id="5IP-4V-pow"/>
+                            <constraint firstItem="TV7-Gm-gl7" firstAttribute="top" secondItem="rhF-9a-G5n" secondAttribute="bottom" id="813-yR-ihM"/>
+                            <constraint firstItem="9iw-IC-aXJ" firstAttribute="top" secondItem="TV7-Gm-gl7" secondAttribute="bottom" id="CFx-bu-kZQ"/>
                             <constraint firstItem="9iw-IC-aXJ" firstAttribute="leading" secondItem="N0b-c6-Yor" secondAttribute="leading" id="EcE-P2-ofi"/>
                             <constraint firstItem="9iw-IC-aXJ" firstAttribute="top" secondItem="TV7-Gm-gl7" secondAttribute="bottom" id="GGV-PV-Gag"/>
                             <constraint firstItem="9O9-h4-jik" firstAttribute="top" secondItem="9iw-IC-aXJ" secondAttribute="bottom" id="J6j-mZ-XEo"/>
                             <constraint firstItem="TV7-Gm-gl7" firstAttribute="leading" secondItem="N0b-c6-Yor" secondAttribute="leading" id="KUu-0r-esa"/>
-                            <constraint firstAttribute="trailing" secondItem="TV7-Gm-gl7" secondAttribute="trailing" id="VOg-Sl-udk"/>
+                            <constraint firstItem="9iw-IC-aXJ" firstAttribute="top" secondItem="TV7-Gm-gl7" secondAttribute="bottom" id="Klj-yP-GiR"/>
                             <constraint firstAttribute="trailing" secondItem="9iw-IC-aXJ" secondAttribute="trailing" id="eA0-mb-8Un"/>
+                            <constraint firstItem="TV7-Gm-gl7" firstAttribute="leading" secondItem="N0b-c6-Yor" secondAttribute="leading" id="hVw-QR-ybi"/>
+                            <constraint firstItem="9iw-IC-aXJ" firstAttribute="top" secondItem="Ttz-XW-Uok" secondAttribute="bottom" id="ilF-mI-d09"/>
+                            <constraint firstAttribute="trailing" secondItem="Ttz-XW-Uok" secondAttribute="trailing" id="pcf-Hs-Lz2"/>
                             <constraint firstItem="TV7-Gm-gl7" firstAttribute="top" secondItem="rhF-9a-G5n" secondAttribute="bottom" id="qbi-Wo-ZNF"/>
+                            <constraint firstItem="TV7-Gm-gl7" firstAttribute="top" secondItem="rhF-9a-G5n" secondAttribute="bottom" id="veH-fi-tKk"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="PFt-pv-Jso"/>
                     <connections>
                         <outlet property="boardsListScroll" destination="TV7-Gm-gl7" id="Rtx-XH-UHP"/>
                         <outlet property="contentScrollView" destination="9iw-IC-aXJ" id="CEf-Ix-BGT"/>
+                        <segue destination="vA6-JE-ITD" kind="show" identifier="editPreferred" id="Y4Y-X8-Fd8"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JqY-aS-NgR" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -343,6 +360,10 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="bax-Qw-1jU"/>
+                    <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="byh-4j-Vga">
+                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </refreshControl>
                     <connections>
                         <segue destination="RFW-5g-o0F" kind="show" identifier="GoToBoard" id="bNE-04-Fo1"/>
                     </connections>
@@ -499,6 +520,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
+        <segue reference="Y4Y-X8-Fd8"/>
         <segue reference="9SO-bw-fer"/>
     </inferredMetricsTieBreakers>
 </document>
