@@ -18,6 +18,18 @@ class ArticleCell: ASCellNode {
         addSubnode(timeNode)
     }
 
+    func countChar(_ str: String) -> Int {
+        var count = 0
+        for char in str.unicodeScalars {
+            if char.isASCII {
+                count += 1
+            } else {
+                count += 2
+            }
+        }
+        return count
+    }
+
     func configureData(content: String, author: String, time: String) {
         authorNode.attributedText = NSAttributedString(string: author)
         timeNode.attributedText = NSAttributedString(string: time)
@@ -31,10 +43,18 @@ class ArticleCell: ASCellNode {
                 addSubnode(imageNode)
                 contentNodes.append(imageNode)
             } else {
+                var newComponent = ""
+                component.enumerateLines(invoking: {
+                    (line, _) in
+                    newComponent.append(line)
+                    print(self.countChar(line), line)
+                    if self.countChar(line) < 76 {
+                        newComponent.append("\n")
+                    }
+                })
                 let textNode = ASTextNode()
                 addSubnode(textNode)
-                var component2 = component.replacingOccurrences(of: "\n", with: "<br/>")
-                textNode.attributedText = try! NSAttributedString(data: component2.data(using: .utf8)!, options: [NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType, NSCharacterEncodingDocumentAttribute: String.Encoding.utf8.rawValue], documentAttributes: nil)
+                textNode.attributedText = NSAttributedString(string: newComponent)
                 contentNodes.append(textNode)
             }
         }

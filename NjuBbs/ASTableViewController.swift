@@ -64,7 +64,10 @@ class ASTableViewController: ASViewController<ASDisplayNode>, ASTableDataSource,
                                 if match != nil {
                                     let author = textareaContentNsString.substring(with: match!.rangeAt(1)).trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
                                     var time = textareaContentNsString.substring(with: match!.rangeAt(2)).trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-                                    var content = textareaContentNsString.substring(with: match!.rangeAt(3)).trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+                                    var content = textareaContentNsString.substring(with: match!.rangeAt(3)).trimmingCharacters(in: CharacterSet.newlines)
+
+                                    //let regexFakeNewLines=try!NSRegularExpression(pattern:"(?<=\r?\n|^)([^\n\r]{38,80})\r?\n+", options: .dotMatchesLineSeparators)
+                                    //content=regexFakeNewLines.stringByReplacingMatches(in: content, options: [], range: NSMakeRange(0, (content as NSString).length), withTemplate: "$1")
 
                                     let dateFormatter = DateFormatter()
                                     dateFormatter.dateFormat = "E MMM d HH:mm:ss yyyy"
