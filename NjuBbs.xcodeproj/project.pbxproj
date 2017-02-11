@@ -28,6 +28,7 @@
 		218A52221E2671DB0073494A /* ArticleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218A52211E2671DB0073494A /* ArticleTableViewCell.swift */; };
 		218B7DFB1E29B5470046C45E /* ArticleListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218B7DFA1E29B5470046C45E /* ArticleListTableViewController.swift */; };
 		21E2495B1E2B0DE8007914FE /* ASTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21E2495A1E2B0DE8007914FE /* ASTableViewController.swift */; };
+		21F6D8131E4DF06A00861847 /* NormalTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21F6D8121E4DF06A00861847 /* NormalTableViewCell.swift */; };
 		F1B436564D0C767D6BA73F98 /* Pods_NjuBbs.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C0E905B444DD709EF552799 /* Pods_NjuBbs.framework */; };
 /* End PBXBuildFile section */
 
@@ -76,6 +77,7 @@
 		218A52211E2671DB0073494A /* ArticleTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArticleTableViewCell.swift; sourceTree = "<group>"; };
 		218B7DFA1E29B5470046C45E /* ArticleListTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArticleListTableViewController.swift; sourceTree = "<group>"; };
 		21E2495A1E2B0DE8007914FE /* ASTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ASTableViewController.swift; sourceTree = "<group>"; };
+		21F6D8121E4DF06A00861847 /* NormalTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NormalTableViewCell.swift; sourceTree = "<group>"; };
 		35C35FC13575B9A3A1D2978B /* Pods-NjuBbs.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NjuBbs.release.xcconfig"; path = "Pods/Target Support Files/Pods-NjuBbs/Pods-NjuBbs.release.xcconfig"; sourceTree = "<group>"; };
 		4C0E905B444DD709EF552799 /* Pods_NjuBbs.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NjuBbs.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E8B845F33A86885ED3161609 /* Pods-NjuBbs.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NjuBbs.debug.xcconfig"; path = "Pods/Target Support Files/Pods-NjuBbs/Pods-NjuBbs.debug.xcconfig"; sourceTree = "<group>"; };
@@ -144,6 +146,7 @@
 			children = (
 				211AA5061E2625D700D5C690 /* AppDelegate.swift */,
 				211AA50A1E2625D700D5C690 /* Main.storyboard */,
+				21F6D8121E4DF06A00861847 /* NormalTableViewCell.swift */,
 				212387E11E2CB8FC00E17D09 /* IconV.swift */,
 				218B7DFA1E29B5470046C45E /* ArticleListTableViewController.swift */,
 				212B40DD1E28910700F83BB9 /* BoardViewController.swift */,
@@ -381,6 +384,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				21F6D8131E4DF06A00861847 /* NormalTableViewCell.swift in Sources */,
 				2187A67F1E27C25C0025933B /* BoardTableViewCell.swift in Sources */,
 				216B5F041E28FA2900589328 /* BoardLabel.swift in Sources */,
 				2187A67B1E27BC080025933B /* BoardsListTableViewCell.swift in Sources */,

@@ -9,78 +9,33 @@
 import UIKit
 import Alamofire
 import Kanna
+import CoreData
 
-struct BoardCellData {
-    let status: String!
-    let author: String!
-    let time: String!
-    let title: String!
-    let numRead: String!
-    let titleUrl: String!
-}
 
 class BoardTableViewController: UITableViewController {
-    let baseUrl = "http://bbs.nju.edu.cn"
-    var viaSegue = ""
-    var cellDataList = [BoardCellData]()
+    var cellDataList = [BoardsListCellData]()
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(viaSegue)
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
-        Alamofire.request(viaSegue).responseData(completionHandler: {
-                    response in
-                    print(response.request!)
-                    print(response.response!)
-                    print(response.data!)
-                    if let data = response.result.value, var content = String(data: data, encoding: String.Encoding(rawValue: CFStringConvertEncodingToNSStringEncoding(CFStringEncoding(CFStringEncodings.GB_18030_2000.rawValue)))) {
-                        content.stringByRepairTd()
-                        content.stringByRepairTr()
-                        print(content)
-                        if let doc = HTML(html: content, encoding: .utf8) {
-                            let tableHead = doc.at_xpath("//table[last()]/tr[1]")
-                            var columnIndexStatus = 0, columnIndexAuthor = 0, columnIndexTime = 0, columnIndexTitle = 0, columnIndexNumRead = 0
-                            for (index, headItem) in (tableHead?.xpath("./td").enumerated())! {
-                                if let item = headItem.text?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) {
-                                    switch item {
-                                    case "状态":
-                                        columnIndexStatus = index + 1
-                                    case "作者":
-                                        columnIndexAuthor = index + 1
-                                    case "日期":
-                                        columnIndexTime = index + 1
-                                    case "标题":
-                                        columnIndexTitle = index + 1
-                                    case "回帖/人气":
-                                        columnIndexNumRead = index + 1
-                                    default:
-                                        ""
-                                    }
-                                }
-                            }
-                            for row in doc.xpath("//table[last()]/tr[position()>1]") {
-                                let status = row.at_xpath("./td[\(columnIndexStatus)]")
-                                let author = row.at_xpath("./td[\(columnIndexAuthor)]")
-                                print(author?.text)
-                                let time = row.at_xpath("./td[\(columnIndexTime)]")
-                                print(time?.text)
-                                let title = row.at_xpath("./td[\(columnIndexTitle)]")
-                                print("title: " + (title?.text)!)
-                                let numRead = row.at_xpath("./td[\(columnIndexNumRead)]")
-                                print(numRead?.text)
-                                let titleUrl = title?.at_xpath("./a/@href")
-                                print(titleUrl?.text)
-                                self.cellDataList.append(BoardCellData(status: status?.text, author: author?.text, time: time?.text, title: title?.text, numRead: numRead?.text, titleUrl: titleUrl?.text))
-                            }
-                            self.tableView.reloadData()
-                        }
-                    }
-                })
+        navigationItem.rightBarButtonItem = editButtonItem
+
+
+        getBoards()
+        self.tableView.reloadData()
         tableView.estimatedRowHeight = 150
         tableView.rowHeight = UITableViewAutomaticDimension;
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        print(cellDataList)
+        self.tableView.reloadData()
+        tableView.estimatedRowHeight = 150
+        tableView.rowHeight = UITableViewAutomaticDimension;
+
     }
 
     override func didReceiveMemoryWarning() {
@@ -92,44 +47,142 @@ class BoardTableViewController: UITableViewController {
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 1
+        return 2
+    }
+
+    override func setEditing(_ editing: Bool, animated: Bool) {
+        super.setEditing(editing, animated: animated)
+        navigationItem.setHidesBackButton(editing, animated: true)
+        self.tableView.reloadSections([1], with: .automatic)
+    }
+
+    override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        let removed = cellDataList[sourceIndexPath.row]
+        cellDataList.remove(at: sourceIndexPath.row)
+        cellDataList.insert(removed, at: destinationIndexPath.row)
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return cellDataList.count
+        if section == 0 {
+            return cellDataList.count
+        }
+        return 1
+    }
+
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            print("deleted")
+            self.cellDataList.remove(at: indexPath.row)
+            self.tableView.deleteRows(at: [indexPath], with: .automatic)
+        }
     }
 
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "BoardTableViewCell", for: indexPath) as! BoardTableViewCell
+        if indexPath.section == 0 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "BoardsListTableViewCell", for: indexPath) as! BoardsListTableViewCell
 
-        cell.statusLabel.text = cellDataList[indexPath.row].status?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-        cell.authorLabel.text = cellDataList[indexPath.row].author?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-        cell.timeLabel.text = cellDataList[indexPath.row].time?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-        cell.titleLabel.text = cellDataList[indexPath.row].title?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-        cell.numReadLabel.text = cellDataList[indexPath.row].numRead?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+            cell.boardLabel.text = cellDataList[indexPath.row].board?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+            cell.categoryLabel.text = cellDataList[indexPath.row].category?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+            cell.nameLabel.text = cellDataList[indexPath.row].name?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+            cell.moderatorLabel.text = cellDataList[indexPath.row].moderator?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
 
-        // Configure the cell...
+            return cell
+        } else {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "NormalTableViewCell", for: indexPath) as! NormalTableViewCell
+            cell.nameLabel.text = "添加新的版面"
+            if isEditing {
+                cell.isHidden = true
+            }
+            return cell
+        }
+    }
 
-        return cell
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        deleteAllBoards()
+        for (index, item) in cellDataList.enumerated() {
+            storeBoard(code: item.board, category: item.category, name: item.name, moderator: item.moderator, url: item.boardUrl, index: index)
+        }
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let cellData = cellDataList[indexPath.row]
-        print(cellData.titleUrl)
-        self.performSegue(withIdentifier: "GoToArticle", sender: self)
+        if indexPath.section == 1 {
+            performSegue(withIdentifier: "ShowBoardsList", sender: self)
+        }
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "GoToArticle" {
-            if let destination = segue.destination as? ArticleTableViewController {
-                let indexPath = tableView.indexPathForSelectedRow
-                destination.viaSegue = baseUrl + "/" + cellDataList[(indexPath?.row)!].titleUrl
+        if segue.identifier == "ShowBoardsList" {
+            if let destination = segue.destination as? BoardsListTableViewController {
+                destination.exceptions = cellDataList
+                destination.previousViewController = self
             }
         }
     }
 
+    func appendBoard(board: BoardsListCellData) {
+        cellDataList.append(board)
+    }
+
+    func getContext() -> NSManagedObjectContext {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        return appDelegate.persistentContainer.viewContext
+    }
+
+    func getBoards() {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Board")
+        let sortDescriptor = NSSortDescriptor(key: "index", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptor]
+        do {
+            let searchResult = try getContext().fetch(fetchRequest)
+            for board in (searchResult as! [NSManagedObject]) {
+                self.cellDataList.append(BoardsListCellData(board: board.value(forKey: "code") as! String!, category: board.value(forKey: "category") as! String!, name: board.value(forKey: "name") as! String!, moderator: board.value(forKey: "moderator") as! String!, boardUrl: board.value(forKey: "url") as! String!))
+            }
+        } catch {
+            print(error)
+        }
+    }
+
+    func storeBoard(code: String, category: String, name: String, moderator: String, url: String, index: Int) {
+        let context = getContext()
+        let entity = NSEntityDescription.entity(forEntityName: "Board", in: context)
+        let board = NSManagedObject(entity: entity!, insertInto: context)
+
+        board.setValue(code, forKey: "code")
+        board.setValue(category, forKey: "category")
+        board.setValue(name, forKey: "name")
+        board.setValue(moderator, forKey: "moderator")
+        board.setValue(url, forKey: "url")
+        board.setValue(index, forKey: "index")
+
+        do {
+            try context.save()
+            print("saved")
+        } catch {
+            print(error)
+        }
+    }
+
+    func deleteAllBoards() {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Board")
+        let context = getContext()
+        do {
+            let searchResult = try context.fetch(fetchRequest)
+            for board in (searchResult as! [NSManagedObject]) {
+                context.delete(board)
+            }
+        } catch {
+            print(error)
+        }
+        do {
+            try context.save()
+            print("saved")
+        } catch {
+            print(error)
+        }
+    }
     /*
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {

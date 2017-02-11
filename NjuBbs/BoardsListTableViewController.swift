@@ -44,7 +44,9 @@ extension String {
 class BoardsListTableViewController: UITableViewController {
     let baseUrl = "http://bbs.nju.edu.cn"
     var cellDataList = [BoardsListCellData]()
-    var preferredCellDataList = [BoardsListCellData]()
+    var exceptions = [BoardsListCellData]()
+    weak var previousViewController: BoardTableViewController?
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -54,19 +56,7 @@ class BoardsListTableViewController: UITableViewController {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
 
-        refreshControl?.addTarget(self, action: #selector(refresh), for: .valueChanged)
-        refreshControl?.attributedTitle = NSAttributedString(string: "下拉刷新")
 
-        getAllBoards()
-        self.tableView.reloadData()
-        tableView.estimatedRowHeight = 150
-        tableView.rowHeight = UITableViewAutomaticDimension;
-
-        isEditing = true
-    }
-
-    func refresh() {
-        cellDataList.removeAll()
         Alamofire.request(baseUrl + "/bbsall").responseData(completionHandler: {
                     response in
                     print(response.request!)
@@ -89,9 +79,8 @@ class BoardsListTableViewController: UITableViewController {
                                 name = name.substring(from: 2)
                                 var moderator = moderatorElement!.text!
                                 var url = boardUrlElement!.text?.replacingOccurrences(of: "bbsdoc", with: "bbstdoc")
-                                self.cellDataList.append(BoardsListCellData(board: code, category: category, name: name, moderator: moderator, boardUrl: url))
                                 if !self.checkBoardCodeExists(code: code) {
-                                    self.storeBoard(code: code, category: category, name: name, moderator: moderator, url: url!)
+                                    self.cellDataList.append(BoardsListCellData(board: code, category: category, name: name, moderator: moderator, boardUrl: url))
                                 }
                             }
                             self.tableView.reloadData()
@@ -101,6 +90,19 @@ class BoardsListTableViewController: UITableViewController {
                 })
         tableView.estimatedRowHeight = 150
         tableView.rowHeight = UITableViewAutomaticDimension;
+
+        self.tableView.reloadData()
+        tableView.estimatedRowHeight = 150
+        tableView.rowHeight = UITableViewAutomaticDimension;
+    }
+
+    func checkBoardCodeExists(code: String) -> Bool {
+        for board in exceptions {
+            if code == board.board {
+                return true
+            }
+        }
+        return false
     }
 
     override func didReceiveMemoryWarning() {
@@ -112,59 +114,21 @@ class BoardsListTableViewController: UITableViewController {
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 2
-    }
-
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if section == 0 {
-            return "喜欢"
-        }
-        return "列表"
-    }
-
-    override func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
-        return false
-    }
-
-    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
-        return .none
-    }
-
-    override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-        if sourceIndexPath.section == 0 && destinationIndexPath.section == 1 {
-            updatePreferred(code: preferredCellDataList[sourceIndexPath.row].board, preferred: false)
-            cellDataList.insert(preferredCellDataList[sourceIndexPath.row], at: destinationIndexPath.row)
-            preferredCellDataList.remove(at: sourceIndexPath.row)
-        } else if sourceIndexPath.section == 1 && destinationIndexPath.section == 0 {
-            updatePreferred(code: cellDataList[sourceIndexPath.row].board, preferred: true)
-            preferredCellDataList.insert(cellDataList[sourceIndexPath.row], at: destinationIndexPath.row)
-            cellDataList.remove(at: sourceIndexPath.row)
-        }
+        return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        if section == 0 {
-            return preferredCellDataList.count
-        } else {
-            return cellDataList.count
-        }
+        return cellDataList.count
     }
 
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "BoardsListTableViewCell", for: indexPath) as! BoardsListTableViewCell
-        if indexPath.section == 0 {
-            cell.boardLabel.text = preferredCellDataList[indexPath.row].board?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-            cell.categoryLabel.text = preferredCellDataList[indexPath.row].category?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-            cell.nameLabel.text = preferredCellDataList[indexPath.row].name?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-            cell.moderatorLabel.text = preferredCellDataList[indexPath.row].moderator?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-        } else {
-            cell.boardLabel.text = cellDataList[indexPath.row].board?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-            cell.categoryLabel.text = cellDataList[indexPath.row].category?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-            cell.nameLabel.text = cellDataList[indexPath.row].name?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-            cell.moderatorLabel.text = cellDataList[indexPath.row].moderator?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-        }
+        cell.boardLabel.text = cellDataList[indexPath.row].board?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+        cell.categoryLabel.text = cellDataList[indexPath.row].category?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+        cell.nameLabel.text = cellDataList[indexPath.row].name?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+        cell.moderatorLabel.text = cellDataList[indexPath.row].moderator?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
 
         // Configure the cell...
 
@@ -172,110 +136,8 @@ class BoardsListTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let cellData = cellDataList[indexPath.row]
-        print(cellData.boardUrl)
-        self.performSegue(withIdentifier: "GoToBoard", sender: self)
-    }
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "GoToBoard" {
-            if let destination = segue.destination as? BoardTableViewController {
-                let indexPath = tableView.indexPathForSelectedRow
-                destination.viaSegue = baseUrl + "/" + cellDataList[(indexPath?.row)!].boardUrl
-            }
-        }
-    }
-
-    func getContext() -> NSManagedObjectContext {
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        return appDelegate.persistentContainer.viewContext
-    }
-
-    func storeBoard(code: String, category: String, name: String, moderator: String, url: String) {
-        let context = getContext()
-        let entity = NSEntityDescription.entity(forEntityName: "Board", in: context)
-        let board = NSManagedObject(entity: entity!, insertInto: context)
-
-        board.setValue(code, forKey: "code")
-        board.setValue(category, forKey: "category")
-        board.setValue(name, forKey: "name")
-        board.setValue(moderator, forKey: "moderator")
-        board.setValue(url, forKey: "url")
-
-        do {
-            try context.save()
-            print("saved")
-        } catch {
-            print(error)
-        }
-    }
-
-    func getAllBoards() {
-        let fetchRequestPreferred = NSFetchRequest<NSFetchRequestResult>(entityName: "Board")
-        fetchRequestPreferred.predicate = NSPredicate(format: "preferred == YES")
-        let fetchRequestNormal = NSFetchRequest<NSFetchRequestResult>(entityName: "Board")
-        fetchRequestNormal.predicate = NSPredicate(format: "preferred == NO")
-        do {
-            let searchResultPreferred = try getContext().fetch(fetchRequestPreferred)
-            for board in (searchResultPreferred as! [NSManagedObject]) {
-                self.preferredCellDataList.append(BoardsListCellData(board: board.value(forKey: "code") as! String!, category: board.value(forKey: "category") as! String!, name: board.value(forKey: "name") as! String!, moderator: board.value(forKey: "moderator") as! String!, boardUrl: board.value(forKey: "url") as! String!))
-            }
-            let searchResult = try getContext().fetch(fetchRequestNormal)
-            for board in (searchResult as! [NSManagedObject]) {
-                self.cellDataList.append(BoardsListCellData(board: board.value(forKey: "code") as! String!, category: board.value(forKey: "category") as! String!, name: board.value(forKey: "name") as! String!, moderator: board.value(forKey: "moderator") as! String!, boardUrl: board.value(forKey: "url") as! String!))
-            }
-        } catch {
-            print(error)
-        }
-    }
-
-    func deleteAllBoards() {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Board")
-        let context = getContext()
-        do {
-            let searchResult = try context.fetch(fetchRequest)
-            for board in (searchResult as! [NSManagedObject]) {
-                context.delete(board)
-            }
-        } catch {
-            print(error)
-        }
-        do {
-            try context.save()
-            print("saved")
-        } catch {
-            print(error)
-        }
-    }
-
-    func checkBoardCodeExists(code: String) -> Bool {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Board")
-        fetchRequest.predicate = NSPredicate(format: "code == %@", code)
-        let fetchResult = try! getContext().fetch(fetchRequest) as! [NSManagedObject]
-        if fetchResult.count > 0 {
-            return true
-        }
-        return false
-    }
-
-    func updatePreferred(code: String, preferred: Bool) {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Board")
-        fetchRequest.predicate = NSPredicate(format: "code == %@", code)
-        let context = getContext()
-        do {
-            let searchResultPreferred = try context.fetch(fetchRequest)
-            for board in (searchResultPreferred as! [NSManagedObject]) {
-                board.setValue(preferred, forKey: "preferred")
-            }
-        } catch {
-            print(error)
-        }
-        do {
-            try context.save()
-            print("saved")
-        } catch {
-            print(error)
-        }
+        previousViewController?.appendBoard(board: cellDataList[indexPath.row])
+        navigationController?.popViewController(animated: true)
     }
 
     /*

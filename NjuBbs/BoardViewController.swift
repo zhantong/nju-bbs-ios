@@ -94,7 +94,7 @@ class BoardViewController: UIViewController {
         label.isUserInteractionEnabled = true
         labelArray.append(label)
         boardsListScroll.addSubview(label)
-        getAllBoards()
+        getBoards()
         for boardsListCellData in self.boardsListCellDataList {
             let label = BoardLabel()
             label.type = 2
@@ -131,12 +131,13 @@ class BoardViewController: UIViewController {
         return appDelegate.persistentContainer.viewContext
     }
 
-    func getAllBoards() {
-        let fetchRequestPreferred = NSFetchRequest<NSFetchRequestResult>(entityName: "Board")
-        fetchRequestPreferred.predicate = NSPredicate(format: "preferred == YES")
+    func getBoards() {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Board")
+        let sortDescriptor = NSSortDescriptor(key: "index", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptor]
         do {
-            let searchResultPreferred = try getContext().fetch(fetchRequestPreferred)
-            for board in (searchResultPreferred as! [NSManagedObject]) {
+            let searchResult = try getContext().fetch(fetchRequest)
+            for board in (searchResult as! [NSManagedObject]) {
                 self.boardsListCellDataList.append(BoardsListCellData(board: board.value(forKey: "code") as! String!, category: board.value(forKey: "category") as! String!, name: board.value(forKey: "name") as! String!, moderator: board.value(forKey: "moderator") as! String!, boardUrl: board.value(forKey: "url") as! String!))
             }
         } catch {
