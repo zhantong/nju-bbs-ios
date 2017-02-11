@@ -7,4 +7,5 @@ target 'NjuBbs' do
     pod 'Alamofire', '~> 4.0'
     pod 'Kanna', '~> 2.1.0'
     pod 'AsyncDisplayKit', '>= 2.0'
+    pod 'MJRefresh'
 end

@@ -10,6 +10,19 @@ import UIKit
 import AsyncDisplayKit
 import Alamofire
 import Darwin.POSIX.iconv
+import MJRefresh
+
+extension String {
+    mutating func stringByRemovingUnsupportedColor() {
+        do {
+            let regex = try NSRegularExpression(pattern: "\\033\\[.*?m", options: NSRegularExpression.Options.caseInsensitive)
+            let range = NSMakeRange(0, self.characters.count)
+            self = regex.stringByReplacingMatches(in: self, options: [], range: range, withTemplate: "")
+        } catch {
+            return
+        }
+    }
+}
 
 class ASTableViewController: ASViewController<ASTableNode>, ASTableDataSource, ASTableDelegate {
 
@@ -24,6 +37,7 @@ class ASTableViewController: ASViewController<ASTableNode>, ASTableDataSource, A
     var moreArticlesUrl = ""
     var pullUpLoadMoreLocked = false
     let baseUrl = "http://bbs.nju.edu.cn"
+    let footer = MJRefreshAutoNormalFooter(refreshingTarget: self, refreshingAction: #selector(ASTableViewController.footerRefresh))
     func requestArticles(url: String, dataHandler: @escaping ([ArticleCellData], String) -> Void) {
         Alamofire.request(url).responseData(completionHandler: {
                     response in
@@ -106,7 +120,8 @@ class ASTableViewController: ASViewController<ASTableNode>, ASTableDataSource, A
         requestArticles(url: viaSegue, dataHandler: {
             data, moreArticlesUrl in
             self.cellDataList = data
-            self.moreArticlesUrl = self.baseUrl + "/" + moreArticlesUrl
+            self.moreArticlesUrl = moreArticlesUrl
+            print(self.moreArticlesUrl)
             self.tableNode.reloadData()
         })
         // Uncomment the following line to preserve selection between presentations
@@ -114,6 +129,39 @@ class ASTableViewController: ASViewController<ASTableNode>, ASTableDataSource, A
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+        footer?.setTitle("没有更多", for: .noMoreData)
+        footer?.setTitle("正在加载", for: .refreshing)
+        tableNode.view.mj_footer = footer
+    }
+
+    func shouldBatchFetch(for tableNode: ASTableNode) -> Bool {
+        if moreArticlesUrl.isEmpty {
+            footer?.endRefreshingWithNoMoreData()
+            return false
+        }
+        return true
+    }
+
+    func tableNode(_ tableNode: ASTableNode, willBeginBatchFetchWith context: ASBatchContext) {
+        if !moreArticlesUrl.isEmpty {
+            let url = baseUrl + "/" + moreArticlesUrl
+            requestArticles(url: url, dataHandler: {
+                data, moreArticlesUrl in
+                self.cellDataList += data[1 ..< data.endIndex]
+                self.moreArticlesUrl = moreArticlesUrl
+                var indexPaths = [IndexPath]()
+                for row in self.cellDataList.endIndex - data.endIndex + 1 ..< self.cellDataList.endIndex {
+                    let path = IndexPath(row: row, section: 0)
+                    indexPaths.append(path)
+                }
+                tableNode.insertRows(at: indexPaths, with: .automatic)
+                context.completeBatchFetching(true)
+            })
+        }
+    }
+
+    func footerRefresh() {
+
     }
     var tableNode: ASTableNode {
         return node as! ASTableNode

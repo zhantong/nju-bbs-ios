@@ -24,8 +24,6 @@
 		2187A67B1E27BC080025933B /* BoardsListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2187A67A1E27BC080025933B /* BoardsListTableViewCell.swift */; };
 		2187A67D1E27C1EB0025933B /* BoardTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2187A67C1E27C1EB0025933B /* BoardTableViewController.swift */; };
 		2187A67F1E27C25C0025933B /* BoardTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2187A67E1E27C25C0025933B /* BoardTableViewCell.swift */; };
-		218A52201E265ABB0073494A /* ArticleTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218A521F1E265ABB0073494A /* ArticleTableViewController.swift */; };
-		218A52221E2671DB0073494A /* ArticleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218A52211E2671DB0073494A /* ArticleTableViewCell.swift */; };
 		218B7DFB1E29B5470046C45E /* ArticleListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218B7DFA1E29B5470046C45E /* ArticleListTableViewController.swift */; };
 		21E2495B1E2B0DE8007914FE /* ASTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21E2495A1E2B0DE8007914FE /* ASTableViewController.swift */; };
 		21F6D8131E4DF06A00861847 /* NormalTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21F6D8121E4DF06A00861847 /* NormalTableViewCell.swift */; };
@@ -73,8 +71,6 @@
 		2187A67A1E27BC080025933B /* BoardsListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardsListTableViewCell.swift; sourceTree = "<group>"; };
 		2187A67C1E27C1EB0025933B /* BoardTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardTableViewController.swift; sourceTree = "<group>"; };
 		2187A67E1E27C25C0025933B /* BoardTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardTableViewCell.swift; sourceTree = "<group>"; };
-		218A521F1E265ABB0073494A /* ArticleTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArticleTableViewController.swift; sourceTree = "<group>"; };
-		218A52211E2671DB0073494A /* ArticleTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArticleTableViewCell.swift; sourceTree = "<group>"; };
 		218B7DFA1E29B5470046C45E /* ArticleListTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArticleListTableViewController.swift; sourceTree = "<group>"; };
 		21E2495A1E2B0DE8007914FE /* ASTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ASTableViewController.swift; sourceTree = "<group>"; };
 		21F6D8121E4DF06A00861847 /* NormalTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NormalTableViewCell.swift; sourceTree = "<group>"; };
@@ -151,8 +147,6 @@
 				218B7DFA1E29B5470046C45E /* ArticleListTableViewController.swift */,
 				212B40DD1E28910700F83BB9 /* BoardViewController.swift */,
 				216B5F031E28FA2900589328 /* BoardLabel.swift */,
-				218A52211E2671DB0073494A /* ArticleTableViewCell.swift */,
-				218A521F1E265ABB0073494A /* ArticleTableViewController.swift */,
 				2187A67A1E27BC080025933B /* BoardsListTableViewCell.swift */,
 				2187A6781E27BBC00025933B /* BoardsListTableViewController.swift */,
 				2187A67E1E27C25C0025933B /* BoardTableViewCell.swift */,
@@ -394,8 +388,6 @@
 				218B7DFB1E29B5470046C45E /* ArticleListTableViewController.swift in Sources */,
 				21E2495B1E2B0DE8007914FE /* ASTableViewController.swift in Sources */,
 				215B08F61E2B3AF7005A6D28 /* ArticleCell.swift in Sources */,
-				218A52201E265ABB0073494A /* ArticleTableViewController.swift in Sources */,
-				218A52221E2671DB0073494A /* ArticleTableViewCell.swift in Sources */,
 				212387E21E2CB8FC00E17D09 /* IconV.swift in Sources */,
 				2187A67D1E27C1EB0025933B /* BoardTableViewController.swift in Sources */,
 				211AA50F1E2625D700D5C690 /* NjuBbs.xcdatamodeld in Sources */,
