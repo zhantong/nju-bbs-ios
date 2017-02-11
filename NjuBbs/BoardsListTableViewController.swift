@@ -41,9 +41,12 @@ extension String {
     }
 }
 
-class BoardsListTableViewController: UITableViewController {
+class BoardsListTableViewController: UITableViewController, UISearchBarDelegate {
+
+    @IBOutlet weak var searchBar: UISearchBar!
     let baseUrl = "http://bbs.nju.edu.cn"
     var cellDataList = [BoardsListCellData]()
+    var searchResults = [BoardsListCellData]()
     var exceptions = [BoardsListCellData]()
     weak var previousViewController: BoardTableViewController?
 
@@ -83,6 +86,7 @@ class BoardsListTableViewController: UITableViewController {
                                     self.cellDataList.append(BoardsListCellData(board: code, category: category, name: name, moderator: moderator, boardUrl: url))
                                 }
                             }
+                            self.searchResults = self.cellDataList
                             self.tableView.reloadData()
                             self.refreshControl?.endRefreshing()
                         }
@@ -94,6 +98,9 @@ class BoardsListTableViewController: UITableViewController {
         self.tableView.reloadData()
         tableView.estimatedRowHeight = 150
         tableView.rowHeight = UITableViewAutomaticDimension;
+
+        searchBar.delegate = self
+        searchBar.placeholder = "搜索版面"
     }
 
     func checkBoardCodeExists(code: String) -> Bool {
@@ -119,16 +126,16 @@ class BoardsListTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return cellDataList.count
+        return searchResults.count
     }
 
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "BoardsListTableViewCell", for: indexPath) as! BoardsListTableViewCell
-        cell.boardLabel.text = cellDataList[indexPath.row].board?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-        cell.categoryLabel.text = cellDataList[indexPath.row].category?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-        cell.nameLabel.text = cellDataList[indexPath.row].name?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-        cell.moderatorLabel.text = cellDataList[indexPath.row].moderator?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+        cell.boardLabel.text = searchResults[indexPath.row].board?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+        cell.categoryLabel.text = searchResults[indexPath.row].category?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+        cell.nameLabel.text = searchResults[indexPath.row].name?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+        cell.moderatorLabel.text = searchResults[indexPath.row].moderator?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
 
         // Configure the cell...
 
@@ -136,10 +143,31 @@ class BoardsListTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        previousViewController?.appendBoard(board: cellDataList[indexPath.row])
+        previousViewController?.appendBoard(board: searchResults[indexPath.row])
         navigationController?.popViewController(animated: true)
     }
 
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchText.isEmpty {
+            searchResults = cellDataList
+        } else {
+            searchResults = cellDataList.filter { cell in
+                return cell.name.lowercased().contains(searchText.lowercased())
+            }
+        }
+        tableView.reloadData()
+    }
+
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+    }
+
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.text = ""
+        searchResults = cellDataList
+        tableView.reloadData()
+        searchBar.resignFirstResponder()
+    }
     /*
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
